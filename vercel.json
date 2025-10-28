@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "buildCommand": "pnpm build",
+  "outputDirectory": "dist",
+  "framework": "vite",
+  "env": {
+    "VITE_API_URL": "https://microdos-api.vercel.app"
+  },
+  "alias": ["microdos.in", "www.microdos.in"]
+}
