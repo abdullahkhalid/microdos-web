@@ -6,5 +6,8 @@
   "env": {
     "VITE_API_URL": "https://microdos-api.vercel.app"
   },
-  "alias": ["microdos.in", "www.microdos.in"]
+  "alias": ["microdos.in", "www.microdos.in"],
+  "rewrites": [
+    { "source": "/(.*)", "destination": "/" }
+  ]
 }
