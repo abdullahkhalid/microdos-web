@@ -28,7 +28,7 @@ const ReactionButton: React.FC<ReactionButtonProps> = ({
   const reactionMutation = useMutation({
     mutationFn: async (action: 'like' | 'unlike') => {
       const response = await fetch(
-        `https://microdos-web.vercel.app/api/community/posts/${postId}/reactions`,
+        `https://microdos-api-03a4b6586106.herokuapp.com/api/community/posts/${postId}/reactions`,
         {
           method: action === 'like' ? 'POST' : 'DELETE',
           headers: {

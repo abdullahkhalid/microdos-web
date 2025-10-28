@@ -66,7 +66,7 @@ export const ExtendedSignupForm: React.FC<ExtendedSignupFormProps> = ({
         // Then save the microdose profile
         try {
           await fetch(
-            'https://microdos-web.vercel.app/api/microdose/save-profile',
+            'https://microdos-api-03a4b6586106.herokuapp.com/api/microdose/save-profile',
             {
               method: 'POST',
               headers: {

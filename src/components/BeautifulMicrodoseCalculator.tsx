@@ -115,7 +115,7 @@ export const BeautifulMicrodoseCalculator: React.FC<
   const fetchSubstances = async () => {
     try {
       const response = await fetch(
-        'https://microdos-web.vercel.app/api/microdose/substances'
+        'https://microdos-api-03a4b6586106.herokuapp.com/api/microdose/substances'
       );
       const data = await response.json();
       setSubstances(data.substances);

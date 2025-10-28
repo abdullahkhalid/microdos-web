@@ -32,7 +32,7 @@ const NotificationBell: React.FC<NotificationBellProps> = ({
       if (!user) return { notifications: [] };
 
       const response = await fetch(
-        'https://microdos-web.vercel.app/api/community/notifications',
+        'https://microdos-api-03a4b6586106.herokuapp.com/api/community/notifications',
         {
           credentials: 'include',
         }
@@ -48,7 +48,7 @@ const NotificationBell: React.FC<NotificationBellProps> = ({
   const markAsRead = async (notificationId: string) => {
     try {
       await fetch(
-        `https://microdos-web.vercel.app/api/community/notifications/${notificationId}/read`,
+        `https://microdos-api-03a4b6586106.herokuapp.com/api/community/notifications/${notificationId}/read`,
         {
           method: 'POST',
           credentials: 'include',
@@ -62,7 +62,7 @@ const NotificationBell: React.FC<NotificationBellProps> = ({
   const markAllAsRead = async () => {
     try {
       await fetch(
-        'https://microdos-web.vercel.app/api/community/notifications/read-all',
+        'https://microdos-api-03a4b6586106.herokuapp.com/api/community/notifications/read-all',
         {
           method: 'POST',
           credentials: 'include',

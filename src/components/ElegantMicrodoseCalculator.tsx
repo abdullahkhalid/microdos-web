@@ -95,7 +95,7 @@ export const ElegantMicrodoseCalculator: React.FC<
   const fetchSubstances = async () => {
     try {
       const substancesResponse = await fetch(
-        'https://microdos-web.vercel.app/api/microdose/substances'
+        'https://microdos-api-03a4b6586106.herokuapp.com/api/microdose/substances'
       );
       const data = await substancesResponse.json();
       setSubstances(data.substances);
@@ -146,7 +146,7 @@ export const ElegantMicrodoseCalculator: React.FC<
     try {
       // Use the correct API endpoint for temporary calculation
       const response = await fetch(
-        'https://microdos-web.vercel.app/api/microdose/calculate-temporary',
+        'https://microdos-api-03a4b6586106.herokuapp.com/api/microdose/calculate-temporary',
         {
           method: 'POST',
           headers: {

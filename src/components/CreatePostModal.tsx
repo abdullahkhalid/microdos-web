@@ -31,7 +31,7 @@ const CreatePostModal: React.FC<CreatePostModalProps> = ({
       }
 
       const response = await fetch(
-        'https://microdos-web.vercel.app/api/community/posts',
+        'https://microdos-api-03a4b6586106.herokuapp.com/api/community/posts',
         {
           method: 'POST',
           headers: {

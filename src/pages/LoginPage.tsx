@@ -44,7 +44,8 @@ export function LoginPage() {
   };
 
   const handleTwitterLogin = () => {
-    window.location.href = 'https://microdos-web.vercel.app/api/auth/twitter';
+    window.location.href =
+      'https://microdos-api-03a4b6586106.herokuapp.com/api/auth/twitter';
   };
 
   return (

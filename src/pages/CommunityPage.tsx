@@ -81,7 +81,7 @@ const CommunityPage: React.FC = () => {
       }
 
       const response = await fetch(
-        `https://microdos-web.vercel.app/api/community/posts?${params.toString()}`
+        `https://microdos-api-03a4b6586106.herokuapp.com/api/community/posts?${params.toString()}`
       );
       return response.json();
     },

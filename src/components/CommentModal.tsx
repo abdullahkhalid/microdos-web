@@ -42,7 +42,7 @@ const CommentModal: React.FC<CommentModalProps> = ({
     queryKey: ['comments', postId],
     queryFn: async () => {
       const response = await fetch(
-        `https://microdos-web.vercel.app/api/community/posts/${postId}/comments`
+        `https://microdos-api-03a4b6586106.herokuapp.com/api/community/posts/${postId}/comments`
       );
       return response.json();
     },
@@ -55,7 +55,7 @@ const CommentModal: React.FC<CommentModalProps> = ({
   const createCommentMutation = useMutation({
     mutationFn: async (content: string) => {
       const response = await fetch(
-        `https://microdos-web.vercel.app/api/community/posts/${postId}/comments`,
+        `https://microdos-api-03a4b6586106.herokuapp.com/api/community/posts/${postId}/comments`,
         {
           method: 'POST',
           headers: {

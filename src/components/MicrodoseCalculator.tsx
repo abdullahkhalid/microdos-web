@@ -60,7 +60,7 @@ export const MicrodoseCalculator: React.FC<MicrodoseCalculatorProps> = ({
     try {
       const response = await apiClient.healthCheck(); // Test API connection
       const substancesResponse = await fetch(
-        'https://microdos-web.vercel.app/api/microdose/substances'
+        'https://microdos-api-03a4b6586106.herokuapp.com/api/microdose/substances'
       );
       const data = await substancesResponse.json();
       setSubstances(data.substances);
@@ -100,7 +100,7 @@ export const MicrodoseCalculator: React.FC<MicrodoseCalculatorProps> = ({
     setCalculating(true);
     try {
       const response = await fetch(
-        'https://microdos-web.vercel.app/api/microdose/calculate-temporary',
+        'https://microdos-api-03a4b6586106.herokuapp.com/api/microdose/calculate-temporary',
         {
           method: 'POST',
           headers: {
