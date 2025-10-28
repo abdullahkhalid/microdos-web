@@ -4,11 +4,11 @@ import { Layout } from '../components/Layout';
 import { Card } from '../components/ui/card';
 import { Button } from '../components/ui/button';
 import { Badge } from '../components/ui/badge';
-import { 
-  Plus, 
-  MessageSquare, 
-  Heart, 
-  Share2, 
+import {
+  Plus,
+  MessageSquare,
+  Heart,
+  Share2,
   MoreHorizontal,
   Search,
   Filter,
@@ -17,7 +17,7 @@ import {
   Star,
   Users,
   Calendar,
-  MessageCircle
+  MessageCircle,
 } from 'lucide-react';
 import { useAuth } from '../hooks/useAuth';
 import CreatePostModal from '../components/CreatePostModal';
@@ -25,7 +25,6 @@ import ReactionButton from '../components/ReactionButton';
 import SearchBar from '../components/SearchBar';
 import CommentModal from '../components/CommentModal';
 import { Link, useLocation } from 'react-router-dom';
-
 
 interface Post {
   id: string;
@@ -55,8 +54,11 @@ const CommunityPage: React.FC = () => {
   const [sortBy, setSortBy] = useState<'new' | 'top' | 'trending'>('new');
   const [showCreateModal, setShowCreateModal] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
-  const [selectedPostForComments, setSelectedPostForComments] = useState<{id: string, title?: string} | null>(null);
-  
+  const [selectedPostForComments, setSelectedPostForComments] = useState<{
+    id: string;
+    title?: string;
+  } | null>(null);
+
   // Determine active tab based on current URL
   const getActiveTab = () => {
     const path = location.pathname;
@@ -65,7 +67,7 @@ const CommunityPage: React.FC = () => {
     if (path === '/community/events') return 'events';
     return 'posts'; // default to posts
   };
-  
+
   const activeTab = getActiveTab();
 
   // Fetch posts
@@ -77,10 +79,12 @@ const CommunityPage: React.FC = () => {
       if (searchQuery) {
         params.append('search', searchQuery);
       }
-      
-      const response = await fetch(`/api/community/posts?${params.toString()}`);
+
+      const response = await fetch(
+        `https://microdos-web.vercel.app/api/community/posts?${params.toString()}`
+      );
       return response.json();
-    }
+    },
   });
 
   const posts: Post[] = postsData?.posts || [];
@@ -94,7 +98,6 @@ const CommunityPage: React.FC = () => {
       <div className="min-h-screen bg-gradient-to-br from-calm-turquoise-50 via-calm-lilac-50 to-calm-yellow-50">
         <div className="container mx-auto px-4 py-8">
           <div className="max-w-6xl mx-auto">
-            
             {/* Community Tab Navigation */}
             <div className="mb-8">
               <div className="flex space-x-1 bg-white/90 backdrop-blur-sm rounded-2xl p-2 shadow-lg max-w-2xl">
@@ -152,7 +155,11 @@ const CommunityPage: React.FC = () => {
                         {[
                           { key: 'new', label: 'Neu', icon: Clock },
                           { key: 'top', label: 'Top', icon: Star },
-                          { key: 'trending', label: 'Trending', icon: TrendingUp }
+                          {
+                            key: 'trending',
+                            label: 'Trending',
+                            icon: TrendingUp,
+                          },
                         ].map(({ key, label, icon: Icon }) => (
                           <button
                             key={key}
@@ -168,7 +175,7 @@ const CommunityPage: React.FC = () => {
                           </button>
                         ))}
                       </div>
-                      
+
                       {/* Search Bar - Center */}
                       <div className="flex-1 w-full md:w-auto">
                         <SearchBar
@@ -177,9 +184,9 @@ const CommunityPage: React.FC = () => {
                           className="w-full max-w-md mx-auto"
                         />
                       </div>
-                      
+
                       {/* New Post Button - Right */}
-                      <Button 
+                      <Button
                         onClick={() => setShowCreateModal(true)}
                         className="bg-gradient-to-r from-calm-turquoise-400 to-calm-lilac-400 hover:from-calm-turquoise-500 hover:to-calm-lilac-500 text-white rounded-lg md:rounded-xl font-soft px-3 md:px-4 py-1.5 md:py-2 text-xs md:text-sm whitespace-nowrap"
                       >
@@ -197,11 +204,16 @@ const CommunityPage: React.FC = () => {
                   <div className="w-20 h-20 bg-gradient-to-br from-calm-turquoise-100 to-calm-lilac-100 rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-lg">
                     <MessageCircle className="w-10 h-10 text-calm-turquoise-600" />
                   </div>
-                  <h3 className="text-2xl font-soft font-semibold text-slate-800 mb-4">Diskussionen</h3>
+                  <h3 className="text-2xl font-soft font-semibold text-slate-800 mb-4">
+                    Diskussionen
+                  </h3>
                   <p className="text-slate-600 mb-8 max-w-md mx-auto text-lg font-soft">
-                    Tiefgreifende Diskussionen über Mikrodosierung und verwandte Themen.
+                    Tiefgreifende Diskussionen über Mikrodosierung und verwandte
+                    Themen.
                   </p>
-                  <p className="text-slate-500 text-sm font-soft">Bald verfügbar...</p>
+                  <p className="text-slate-500 text-sm font-soft">
+                    Bald verfügbar...
+                  </p>
                 </div>
               )}
 
@@ -210,11 +222,16 @@ const CommunityPage: React.FC = () => {
                   <div className="w-20 h-20 bg-gradient-to-br from-calm-turquoise-100 to-calm-lilac-100 rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-lg">
                     <Calendar className="w-10 h-10 text-calm-turquoise-600" />
                   </div>
-                  <h3 className="text-2xl font-soft font-semibold text-slate-800 mb-4">Events</h3>
+                  <h3 className="text-2xl font-soft font-semibold text-slate-800 mb-4">
+                    Events
+                  </h3>
                   <p className="text-slate-600 mb-8 max-w-md mx-auto text-lg font-soft">
-                    Community-Events, Meetups und Veranstaltungen rund um Mikrodosierung.
+                    Community-Events, Meetups und Veranstaltungen rund um
+                    Mikrodosierung.
                   </p>
-                  <p className="text-slate-500 text-sm font-soft">Bald verfügbar...</p>
+                  <p className="text-slate-500 text-sm font-soft">
+                    Bald verfügbar...
+                  </p>
                 </div>
               )}
 
@@ -232,11 +249,14 @@ const CommunityPage: React.FC = () => {
                         <div className="w-20 h-20 bg-gradient-to-br from-calm-turquoise-100 to-calm-lilac-100 rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-lg">
                           <MessageSquare className="w-10 h-10 text-calm-turquoise-600" />
                         </div>
-                        <h3 className="text-2xl font-soft font-semibold text-slate-800 mb-4">Noch keine Posts</h3>
+                        <h3 className="text-2xl font-soft font-semibold text-slate-800 mb-4">
+                          Noch keine Posts
+                        </h3>
                         <p className="text-slate-600 mb-8 max-w-md mx-auto text-lg font-soft">
-                          Sei der Erste, der einen Post in der Community teilt und andere inspirierst!
+                          Sei der Erste, der einen Post in der Community teilt
+                          und andere inspirierst!
                         </p>
-                        <Button 
+                        <Button
                           onClick={() => setShowCreateModal(true)}
                           className="rounded-2xl bg-gradient-to-r from-calm-turquoise-400 to-calm-lilac-400 hover:from-calm-turquoise-500 hover:to-calm-lilac-500 text-white px-8 py-4 text-lg shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105 font-soft"
                         >
@@ -246,8 +266,11 @@ const CommunityPage: React.FC = () => {
                       </div>
                     </div>
                   ) : (
-                    posts.map((post) => (
-                      <div key={post.id} className="border-0 shadow-xl bg-white/80 backdrop-blur-sm rounded-3xl border border-white/40 hover:shadow-2xl group transition-all duration-300">
+                    posts.map(post => (
+                      <div
+                        key={post.id}
+                        className="border-0 shadow-xl bg-white/80 backdrop-blur-sm rounded-3xl border border-white/40 hover:shadow-2xl group transition-all duration-300"
+                      >
                         <div className="p-8">
                           <div className="flex items-start justify-between mb-6">
                             <div className="flex items-center space-x-4">
@@ -255,9 +278,13 @@ const CommunityPage: React.FC = () => {
                                 {post.author.name.charAt(0).toUpperCase()}
                               </div>
                               <div>
-                                <h4 className="font-soft font-semibold text-slate-800 text-lg">{post.author.name}</h4>
+                                <h4 className="font-soft font-semibold text-slate-800 text-lg">
+                                  {post.author.name}
+                                </h4>
                                 <p className="text-sm text-slate-500 font-soft">
-                                  {new Date(post.createdAt).toLocaleDateString('de-DE')}
+                                  {new Date(post.createdAt).toLocaleDateString(
+                                    'de-DE'
+                                  )}
                                 </p>
                               </div>
                             </div>
@@ -269,9 +296,11 @@ const CommunityPage: React.FC = () => {
                           </div>
 
                           {post.title && (
-                            <h3 className="text-xl font-soft font-semibold text-slate-800 mb-4">{post.title}</h3>
+                            <h3 className="text-xl font-soft font-semibold text-slate-800 mb-4">
+                              {post.title}
+                            </h3>
                           )}
-                          
+
                           <p className="text-slate-700 mb-6 leading-relaxed line-clamp-3 font-soft">
                             {post.content}
                           </p>
@@ -286,7 +315,7 @@ const CommunityPage: React.FC = () => {
                                 onCommentClick={() => {
                                   setSelectedPostForComments({
                                     id: post.id,
-                                    title: post.title
+                                    title: post.title,
                                   });
                                 }}
                                 onShareClick={() => {
@@ -295,11 +324,15 @@ const CommunityPage: React.FC = () => {
                                     navigator.share({
                                       title: post.title || 'Community Post',
                                       text: post.content,
-                                      url: window.location.href
+                                      url: window.location.href,
                                     });
                                   } else {
-                                    navigator.clipboard.writeText(window.location.href);
-                                    alert('Link in die Zwischenablage kopiert!');
+                                    navigator.clipboard.writeText(
+                                      window.location.href
+                                    );
+                                    alert(
+                                      'Link in die Zwischenablage kopiert!'
+                                    );
                                   }
                                 }}
                               />

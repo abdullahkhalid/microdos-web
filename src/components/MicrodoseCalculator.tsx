@@ -40,7 +40,7 @@ export const MicrodoseCalculator: React.FC<MicrodoseCalculatorProps> = ({
   const [loading, setLoading] = useState(false);
   const [calculating, setCalculating] = useState(false);
   const [result, setResult] = useState<MicrodoseCalculationResult | null>(null);
-  
+
   const [formData, setFormData] = useState({
     gender: '',
     weight: '',
@@ -59,7 +59,9 @@ export const MicrodoseCalculator: React.FC<MicrodoseCalculatorProps> = ({
   const fetchSubstances = async () => {
     try {
       const response = await apiClient.healthCheck(); // Test API connection
-      const substancesResponse = await fetch('/api/microdose/substances');
+      const substancesResponse = await fetch(
+        'https://microdos-web.vercel.app/api/microdose/substances'
+      );
       const data = await substancesResponse.json();
       setSubstances(data.substances);
     } catch (error) {
@@ -72,7 +74,7 @@ export const MicrodoseCalculator: React.FC<MicrodoseCalculatorProps> = ({
       ...prev,
       [field]: value,
     }));
-    
+
     // Reset intake form when substance changes
     if (field === 'substance') {
       setFormData(prev => ({
@@ -84,36 +86,46 @@ export const MicrodoseCalculator: React.FC<MicrodoseCalculatorProps> = ({
   };
 
   const calculateMicrodose = async () => {
-    if (!formData.gender || !formData.weight || !formData.substance || 
-        !formData.intakeForm || !formData.goal) {
+    if (
+      !formData.gender ||
+      !formData.weight ||
+      !formData.substance ||
+      !formData.intakeForm ||
+      !formData.goal
+    ) {
       alert('Bitte füllen Sie alle Pflichtfelder aus.');
       return;
     }
 
     setCalculating(true);
     try {
-      const response = await fetch('/api/microdose/calculate-temporary', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          gender: formData.gender,
-          weight: parseFloat(formData.weight),
-          substance: formData.substance,
-          intakeForm: formData.intakeForm,
-          sensitivity: parseFloat(formData.sensitivity),
-          goal: formData.goal,
-          experience: formData.experience || undefined,
-          currentMedication: formData.currentMedication || undefined,
-        }),
-      });
+      const response = await fetch(
+        'https://microdos-web.vercel.app/api/microdose/calculate-temporary',
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            gender: formData.gender,
+            weight: parseFloat(formData.weight),
+            substance: formData.substance,
+            intakeForm: formData.intakeForm,
+            sensitivity: parseFloat(formData.sensitivity),
+            goal: formData.goal,
+            experience: formData.experience || undefined,
+            currentMedication: formData.currentMedication || undefined,
+          }),
+        }
+      );
 
       const data = await response.json();
       if (data.success) {
         setResult(data.result);
       } else {
-        alert('Fehler bei der Berechnung: ' + (data.error || 'Unbekannter Fehler'));
+        alert(
+          'Fehler bei der Berechnung: ' + (data.error || 'Unbekannter Fehler')
+        );
       }
     } catch (error) {
       console.error('Error calculating microdose:', error);
@@ -145,7 +157,8 @@ export const MicrodoseCalculator: React.FC<MicrodoseCalculatorProps> = ({
         <CardHeader>
           <CardTitle>Mikrodosierungs-Berechner</CardTitle>
           <p className="text-sm text-gray-600">
-            Geben Sie Ihre Daten ein, um eine personalisierte Mikrodosis zu berechnen.
+            Geben Sie Ihre Daten ein, um eine personalisierte Mikrodosis zu
+            berechnen.
           </p>
         </CardHeader>
         <CardContent className="space-y-6">
@@ -155,7 +168,7 @@ export const MicrodoseCalculator: React.FC<MicrodoseCalculatorProps> = ({
             <select
               id="gender"
               value={formData.gender}
-              onChange={(e) => handleInputChange('gender', e.target.value)}
+              onChange={e => handleInputChange('gender', e.target.value)}
               className="w-full p-2 border border-gray-300 rounded-md"
             >
               <option value="">Bitte wählen</option>
@@ -174,7 +187,7 @@ export const MicrodoseCalculator: React.FC<MicrodoseCalculatorProps> = ({
               min="30"
               max="200"
               value={formData.weight}
-              onChange={(e) => handleInputChange('weight', e.target.value)}
+              onChange={e => handleInputChange('weight', e.target.value)}
               placeholder="z.B. 70"
             />
           </div>
@@ -185,11 +198,11 @@ export const MicrodoseCalculator: React.FC<MicrodoseCalculatorProps> = ({
             <select
               id="substance"
               value={formData.substance}
-              onChange={(e) => handleInputChange('substance', e.target.value)}
+              onChange={e => handleInputChange('substance', e.target.value)}
               className="w-full p-2 border border-gray-300 rounded-md"
             >
               <option value="">Bitte wählen</option>
-              {substances.map((substance) => (
+              {substances.map(substance => (
                 <option key={substance.id} value={substance.id}>
                   {substance.name}
                 </option>
@@ -204,11 +217,11 @@ export const MicrodoseCalculator: React.FC<MicrodoseCalculatorProps> = ({
               <select
                 id="intakeForm"
                 value={formData.intakeForm}
-                onChange={(e) => handleInputChange('intakeForm', e.target.value)}
+                onChange={e => handleInputChange('intakeForm', e.target.value)}
                 className="w-full p-2 border border-gray-300 rounded-md"
               >
                 <option value="">Bitte wählen</option>
-                {selectedSubstance.intakeForms.map((form) => (
+                {selectedSubstance.intakeForms.map(form => (
                   <option key={form.id} value={form.id}>
                     {form.name}
                   </option>
@@ -223,7 +236,7 @@ export const MicrodoseCalculator: React.FC<MicrodoseCalculatorProps> = ({
             <select
               id="sensitivity"
               value={formData.sensitivity}
-              onChange={(e) => handleInputChange('sensitivity', e.target.value)}
+              onChange={e => handleInputChange('sensitivity', e.target.value)}
               className="w-full p-2 border border-gray-300 rounded-md"
             >
               <option value="0.5">Sehr empfindlich (0.5x)</option>
@@ -240,13 +253,17 @@ export const MicrodoseCalculator: React.FC<MicrodoseCalculatorProps> = ({
             <select
               id="goal"
               value={formData.goal}
-              onChange={(e) => handleInputChange('goal', e.target.value)}
+              onChange={e => handleInputChange('goal', e.target.value)}
               className="w-full p-2 border border-gray-300 rounded-md"
             >
               <option value="">Bitte wählen</option>
-              <option value="sub_perceptual">Sub-perzeptuell (5% der Normaldosis)</option>
+              <option value="sub_perceptual">
+                Sub-perzeptuell (5% der Normaldosis)
+              </option>
               <option value="standard">Standard (10% der Normaldosis)</option>
-              <option value="upper_microdose">Obere Mikrodosis (20% der Normaldosis)</option>
+              <option value="upper_microdose">
+                Obere Mikrodosis (20% der Normaldosis)
+              </option>
             </select>
           </div>
 
@@ -256,7 +273,7 @@ export const MicrodoseCalculator: React.FC<MicrodoseCalculatorProps> = ({
             <select
               id="experience"
               value={formData.experience}
-              onChange={(e) => handleInputChange('experience', e.target.value)}
+              onChange={e => handleInputChange('experience', e.target.value)}
               className="w-full p-2 border border-gray-300 rounded-md"
             >
               <option value="">Bitte wählen</option>
@@ -272,7 +289,9 @@ export const MicrodoseCalculator: React.FC<MicrodoseCalculatorProps> = ({
             <Input
               id="currentMedication"
               value={formData.currentMedication}
-              onChange={(e) => handleInputChange('currentMedication', e.target.value)}
+              onChange={e =>
+                handleInputChange('currentMedication', e.target.value)
+              }
               placeholder="z.B. SSRI, Antidepressiva..."
             />
           </div>
@@ -281,8 +300,8 @@ export const MicrodoseCalculator: React.FC<MicrodoseCalculatorProps> = ({
             <Button onClick={onBack} variant="outline">
               Zurück
             </Button>
-            <Button 
-              onClick={calculateMicrodose} 
+            <Button
+              onClick={calculateMicrodose}
               disabled={calculating}
               className="flex-1"
             >

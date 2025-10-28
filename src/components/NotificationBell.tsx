@@ -19,7 +19,9 @@ interface NotificationBellProps {
   className?: string;
 }
 
-const NotificationBell: React.FC<NotificationBellProps> = ({ className = "" }) => {
+const NotificationBell: React.FC<NotificationBellProps> = ({
+  className = '',
+}) => {
   const { user } = useAuth();
   const [isOpen, setIsOpen] = useState(false);
 
@@ -28,13 +30,16 @@ const NotificationBell: React.FC<NotificationBellProps> = ({ className = "" }) =
     queryKey: ['notifications'],
     queryFn: async () => {
       if (!user) return { notifications: [] };
-      
-      const response = await fetch('/api/community/notifications', {
-        credentials: 'include'
-      });
+
+      const response = await fetch(
+        'https://microdos-web.vercel.app/api/community/notifications',
+        {
+          credentials: 'include',
+        }
+      );
       return response.json();
     },
-    enabled: !!user
+    enabled: !!user,
   });
 
   const notifications: Notification[] = notificationsData?.notifications || [];
@@ -42,10 +47,13 @@ const NotificationBell: React.FC<NotificationBellProps> = ({ className = "" }) =
 
   const markAsRead = async (notificationId: string) => {
     try {
-      await fetch(`/api/community/notifications/${notificationId}/read`, {
-        method: 'POST',
-        credentials: 'include'
-      });
+      await fetch(
+        `https://microdos-web.vercel.app/api/community/notifications/${notificationId}/read`,
+        {
+          method: 'POST',
+          credentials: 'include',
+        }
+      );
     } catch (error) {
       console.error('Error marking notification as read:', error);
     }
@@ -53,10 +61,13 @@ const NotificationBell: React.FC<NotificationBellProps> = ({ className = "" }) =
 
   const markAllAsRead = async () => {
     try {
-      await fetch('/api/community/notifications/read-all', {
-        method: 'POST',
-        credentials: 'include'
-      });
+      await fetch(
+        'https://microdos-web.vercel.app/api/community/notifications/read-all',
+        {
+          method: 'POST',
+          credentials: 'include',
+        }
+      );
     } catch (error) {
       console.error('Error marking all notifications as read:', error);
     }
@@ -114,16 +125,20 @@ const NotificationBell: React.FC<NotificationBellProps> = ({ className = "" }) =
             {isLoading ? (
               <div className="p-4 text-center">
                 <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-blue-500 mx-auto mb-2"></div>
-                <p className="text-sm text-gray-500">Lade Benachrichtigungen...</p>
+                <p className="text-sm text-gray-500">
+                  Lade Benachrichtigungen...
+                </p>
               </div>
             ) : notifications.length === 0 ? (
               <div className="p-8 text-center">
                 <Bell className="w-12 h-12 text-gray-300 mx-auto mb-3" />
-                <p className="text-gray-500 text-sm">Keine Benachrichtigungen</p>
+                <p className="text-gray-500 text-sm">
+                  Keine Benachrichtigungen
+                </p>
               </div>
             ) : (
               <div className="divide-y divide-gray-100">
-                {notifications.map((notification) => (
+                {notifications.map(notification => (
                   <div
                     key={notification.id}
                     className={`p-4 hover:bg-gray-50 cursor-pointer transition-colors ${
@@ -136,9 +151,11 @@ const NotificationBell: React.FC<NotificationBellProps> = ({ className = "" }) =
                     }}
                   >
                     <div className="flex items-start space-x-3">
-                      <div className={`w-2 h-2 rounded-full mt-2 ${
-                        !notification.isRead ? 'bg-blue-500' : 'bg-gray-300'
-                      }`} />
+                      <div
+                        className={`w-2 h-2 rounded-full mt-2 ${
+                          !notification.isRead ? 'bg-blue-500' : 'bg-gray-300'
+                        }`}
+                      />
                       <div className="flex-1 min-w-0">
                         <h4 className="text-sm font-medium text-gray-900 truncate">
                           {notification.title}
@@ -147,12 +164,15 @@ const NotificationBell: React.FC<NotificationBellProps> = ({ className = "" }) =
                           {notification.message}
                         </p>
                         <p className="text-xs text-gray-400 mt-2">
-                          {new Date(notification.createdAt).toLocaleDateString('de-DE', {
-                            day: '2-digit',
-                            month: '2-digit',
-                            hour: '2-digit',
-                            minute: '2-digit'
-                          })}
+                          {new Date(notification.createdAt).toLocaleDateString(
+                            'de-DE',
+                            {
+                              day: '2-digit',
+                              month: '2-digit',
+                              hour: '2-digit',
+                              minute: '2-digit',
+                            }
+                          )}
                         </p>
                       </div>
                     </div>
@@ -183,10 +203,7 @@ const NotificationBell: React.FC<NotificationBellProps> = ({ className = "" }) =
 
       {/* Backdrop */}
       {isOpen && (
-        <div
-          className="fixed inset-0 z-40"
-          onClick={() => setIsOpen(false)}
-        />
+        <div className="fixed inset-0 z-40" onClick={() => setIsOpen(false)} />
       )}
     </div>
   );

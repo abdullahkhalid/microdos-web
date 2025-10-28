@@ -2,13 +2,7 @@ import React, { useState } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { Button } from './ui/button';
 import { Card } from './ui/card';
-import { 
-  X, 
-  Send,
-  Heart,
-  MessageCircle,
-  User
-} from 'lucide-react';
+import { X, Send, Heart, MessageCircle, User } from 'lucide-react';
 import { useAuth } from '../hooks/useAuth';
 
 interface Comment {
@@ -32,11 +26,11 @@ interface CommentModalProps {
   postTitle?: string;
 }
 
-const CommentModal: React.FC<CommentModalProps> = ({ 
-  isOpen, 
-  onClose, 
-  postId, 
-  postTitle 
+const CommentModal: React.FC<CommentModalProps> = ({
+  isOpen,
+  onClose,
+  postId,
+  postTitle,
 }) => {
   const { user } = useAuth();
   const queryClient = useQueryClient();
@@ -47,10 +41,12 @@ const CommentModal: React.FC<CommentModalProps> = ({
   const { data: commentsData, isLoading } = useQuery({
     queryKey: ['comments', postId],
     queryFn: async () => {
-      const response = await fetch(`/api/community/posts/${postId}/comments`);
+      const response = await fetch(
+        `https://microdos-web.vercel.app/api/community/posts/${postId}/comments`
+      );
       return response.json();
     },
-    enabled: isOpen
+    enabled: isOpen,
   });
 
   const comments: Comment[] = commentsData?.comments || [];
@@ -58,22 +54,25 @@ const CommentModal: React.FC<CommentModalProps> = ({
   // Create comment mutation
   const createCommentMutation = useMutation({
     mutationFn: async (content: string) => {
-      const response = await fetch(`/api/community/posts/${postId}/comments`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'X-User-ID': user?.id || '',
-          'X-User-Name': user?.name || '',
-          'X-User-Email': user?.email || '',
-        },
-        credentials: 'include',
-        body: JSON.stringify({ content })
-      });
-      
+      const response = await fetch(
+        `https://microdos-web.vercel.app/api/community/posts/${postId}/comments`,
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'X-User-ID': user?.id || '',
+            'X-User-Name': user?.name || '',
+            'X-User-Email': user?.email || '',
+          },
+          credentials: 'include',
+          body: JSON.stringify({ content }),
+        }
+      );
+
       if (!response.ok) {
         throw new Error('Failed to create comment');
       }
-      
+
       return response.json();
     },
     onSuccess: () => {
@@ -81,22 +80,22 @@ const CommentModal: React.FC<CommentModalProps> = ({
       queryClient.invalidateQueries({ queryKey: ['community', 'posts'] });
       setNewComment('');
     },
-    onError: (error) => {
+    onError: error => {
       console.error('Error creating comment:', error);
       alert('Fehler beim Erstellen des Kommentars: ' + error.message);
-    }
+    },
   });
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     if (!newComment.trim()) {
       alert('Bitte gib einen Kommentar ein.');
       return;
     }
 
     setIsSubmitting(true);
-    
+
     try {
       await createCommentMutation.mutateAsync(newComment.trim());
     } finally {
@@ -140,10 +139,12 @@ const CommentModal: React.FC<CommentModalProps> = ({
             <div className="text-center py-8">
               <MessageCircle className="w-12 h-12 text-gray-300 mx-auto mb-3" />
               <p className="text-gray-500">Noch keine Kommentare</p>
-              <p className="text-sm text-gray-400 mt-1">Sei der Erste, der kommentiert!</p>
+              <p className="text-sm text-gray-400 mt-1">
+                Sei der Erste, der kommentiert!
+              </p>
             </div>
           ) : (
-            comments.map((comment) => (
+            comments.map(comment => (
               <div key={comment.id} className="flex space-x-3">
                 <div className="w-8 h-8 bg-gradient-to-r from-turquoise-500 to-lilac-500 rounded-full flex items-center justify-center text-white font-semibold text-sm flex-shrink-0">
                   {comment.author.name.charAt(0).toUpperCase()}
@@ -155,12 +156,15 @@ const CommentModal: React.FC<CommentModalProps> = ({
                         {comment.author.name}
                       </h4>
                       <span className="text-xs text-gray-500">
-                        {new Date(comment.createdAt).toLocaleDateString('de-DE', {
-                          day: '2-digit',
-                          month: '2-digit',
-                          hour: '2-digit',
-                          minute: '2-digit'
-                        })}
+                        {new Date(comment.createdAt).toLocaleDateString(
+                          'de-DE',
+                          {
+                            day: '2-digit',
+                            month: '2-digit',
+                            hour: '2-digit',
+                            minute: '2-digit',
+                          }
+                        )}
                       </span>
                     </div>
                     <p className="text-gray-700 text-sm leading-relaxed">
@@ -190,14 +194,16 @@ const CommentModal: React.FC<CommentModalProps> = ({
                 <div className="flex-1">
                   <textarea
                     value={newComment}
-                    onChange={(e) => setNewComment(e.target.value)}
+                    onChange={e => setNewComment(e.target.value)}
                     placeholder="Schreibe einen Kommentar..."
                     className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-turquoise-500 focus:border-transparent outline-none transition-all duration-200 resize-none"
                     rows={3}
                     maxLength={1000}
                     required
                   />
-                  <p className="text-xs text-gray-500 mt-1">{newComment.length}/1000 Zeichen</p>
+                  <p className="text-xs text-gray-500 mt-1">
+                    {newComment.length}/1000 Zeichen
+                  </p>
                 </div>
               </div>
               <div className="flex justify-end">

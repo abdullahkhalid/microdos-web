@@ -2,14 +2,7 @@ import React, { useState } from 'react';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { Button } from './ui/button';
 import { Card } from './ui/card';
-import { 
-  X, 
-  Image, 
-  Link, 
-  Smile, 
-  Send,
-  Plus
-} from 'lucide-react';
+import { X, Image, Link, Smile, Send, Plus } from 'lucide-react';
 import { useAuth } from '../hooks/useAuth';
 
 interface CreatePostModalProps {
@@ -17,7 +10,10 @@ interface CreatePostModalProps {
   onClose: () => void;
 }
 
-const CreatePostModal: React.FC<CreatePostModalProps> = ({ isOpen, onClose }) => {
+const CreatePostModal: React.FC<CreatePostModalProps> = ({
+  isOpen,
+  onClose,
+}) => {
   const { user } = useAuth();
   const queryClient = useQueryClient();
   const [title, setTitle] = useState('');
@@ -28,69 +24,72 @@ const CreatePostModal: React.FC<CreatePostModalProps> = ({ isOpen, onClose }) =>
     mutationFn: async (postData: { title?: string; content: string }) => {
       console.log('Creating post with data:', postData);
       console.log('User data:', user);
-      
+
       // For testing purposes, allow posts without authentication
       if (!user) {
         console.warn('User not authenticated, using fallback values');
       }
 
-      const response = await fetch('/api/community/posts', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'X-User-ID': user?.id || 'anonymous-user',
-          'X-User-Name': user?.name || 'Anonymous User',
-          'X-User-Email': user?.email || 'anonymous@example.com',
-        },
-        credentials: 'include',
-        body: JSON.stringify(postData)
-      });
-      
+      const response = await fetch(
+        'https://microdos-web.vercel.app/api/community/posts',
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'X-User-ID': user?.id || 'anonymous-user',
+            'X-User-Name': user?.name || 'Anonymous User',
+            'X-User-Email': user?.email || 'anonymous@example.com',
+          },
+          credentials: 'include',
+          body: JSON.stringify(postData),
+        }
+      );
+
       console.log('Response status:', response.status);
       console.log('Response headers:', response.headers);
-      
+
       if (!response.ok) {
         const errorData = await response.text();
         console.error('Error response:', errorData);
         throw new Error(`HTTP ${response.status}: ${errorData}`);
       }
-      
+
       const result = await response.json();
       console.log('Success response:', result);
       return result;
     },
-    onSuccess: (data) => {
+    onSuccess: data => {
       console.log('Post created successfully:', data);
       queryClient.invalidateQueries({ queryKey: ['community', 'posts'] });
       setTitle('');
       setContent('');
       onClose();
     },
-    onError: (error) => {
+    onError: error => {
       console.error('Error creating post:', error);
       alert('Fehler beim Erstellen des Posts: ' + error.message);
-    }
+    },
   });
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     // Allow posts without authentication for testing
     if (!user) {
       console.warn('User not authenticated, proceeding with anonymous post');
     }
-    
+
     if (!content.trim()) {
       alert('Bitte gib einen Inhalt für deinen Post ein.');
       return;
     }
 
     setIsSubmitting(true);
-    
+
     try {
       await createPostMutation.mutateAsync({
         title: title.trim() || undefined,
-        content: content.trim()
+        content: content.trim(),
       });
     } catch (error) {
       console.error('Submit error:', error);
@@ -116,7 +115,9 @@ const CreatePostModal: React.FC<CreatePostModalProps> = ({ isOpen, onClose }) =>
         <div className="p-8">
           {/* Header */}
           <div className="flex items-center justify-between mb-8">
-            <h2 className="text-2xl font-soft font-semibold text-slate-800">Neuen Post erstellen</h2>
+            <h2 className="text-2xl font-soft font-semibold text-slate-800">
+              Neuen Post erstellen
+            </h2>
             <Button
               variant="ghost"
               size="sm"
@@ -133,8 +134,12 @@ const CreatePostModal: React.FC<CreatePostModalProps> = ({ isOpen, onClose }) =>
               {user?.name?.charAt(0).toUpperCase() || 'U'}
             </div>
             <div>
-              <h3 className="font-soft font-semibold text-slate-800 text-lg">{user?.name || 'Benutzer'}</h3>
-              <p className="text-sm text-slate-500 font-soft">Teile deine Erfahrungen mit der Community</p>
+              <h3 className="font-soft font-semibold text-slate-800 text-lg">
+                {user?.name || 'Benutzer'}
+              </h3>
+              <p className="text-sm text-slate-500 font-soft">
+                Teile deine Erfahrungen mit der Community
+              </p>
             </div>
           </div>
 
@@ -146,11 +151,13 @@ const CreatePostModal: React.FC<CreatePostModalProps> = ({ isOpen, onClose }) =>
                 type="text"
                 placeholder="Titel (optional)"
                 value={title}
-                onChange={(e) => setTitle(e.target.value)}
+                onChange={e => setTitle(e.target.value)}
                 className="w-full px-4 py-3 border border-slate-200 rounded-2xl focus:ring-2 focus:ring-calm-turquoise-500 focus:border-transparent outline-none transition-all duration-200 font-soft"
                 maxLength={200}
               />
-              <p className="text-xs text-slate-500 mt-2 font-soft">{title.length}/200 Zeichen</p>
+              <p className="text-xs text-slate-500 mt-2 font-soft">
+                {title.length}/200 Zeichen
+              </p>
             </div>
 
             {/* Content */}
@@ -158,13 +165,15 @@ const CreatePostModal: React.FC<CreatePostModalProps> = ({ isOpen, onClose }) =>
               <textarea
                 placeholder="Was möchtest du mit der Community teilen?"
                 value={content}
-                onChange={(e) => setContent(e.target.value)}
+                onChange={e => setContent(e.target.value)}
                 className="w-full px-4 py-3 border border-slate-200 rounded-2xl focus:ring-2 focus:ring-calm-turquoise-500 focus:border-transparent outline-none transition-all duration-200 resize-none font-soft"
                 rows={6}
                 maxLength={2000}
                 required
               />
-              <p className="text-xs text-slate-500 mt-2 font-soft">{content.length}/2000 Zeichen</p>
+              <p className="text-xs text-slate-500 mt-2 font-soft">
+                {content.length}/2000 Zeichen
+              </p>
             </div>
 
             {/* Action Buttons */}

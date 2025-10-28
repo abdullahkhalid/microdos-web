@@ -19,7 +19,7 @@ const ReactionButton: React.FC<ReactionButtonProps> = ({
   commentCount,
   hasReacted = false,
   onCommentClick,
-  onShareClick
+  onShareClick,
 }) => {
   const { user } = useAuth();
   const queryClient = useQueryClient();
@@ -27,29 +27,32 @@ const ReactionButton: React.FC<ReactionButtonProps> = ({
 
   const reactionMutation = useMutation({
     mutationFn: async (action: 'like' | 'unlike') => {
-      const response = await fetch(`/api/community/posts/${postId}/reactions`, {
-        method: action === 'like' ? 'POST' : 'DELETE',
-        headers: {
-          'Content-Type': 'application/json',
-          'X-User-ID': user?.id || '',
-          'X-User-Name': user?.name || '',
-          'X-User-Email': user?.email || '',
-        },
-        credentials: 'include'
-      });
-      
+      const response = await fetch(
+        `https://microdos-web.vercel.app/api/community/posts/${postId}/reactions`,
+        {
+          method: action === 'like' ? 'POST' : 'DELETE',
+          headers: {
+            'Content-Type': 'application/json',
+            'X-User-ID': user?.id || '',
+            'X-User-Name': user?.name || '',
+            'X-User-Email': user?.email || '',
+          },
+          credentials: 'include',
+        }
+      );
+
       if (!response.ok) {
         throw new Error(`Failed to ${action} post`);
       }
-      
+
       return response.json();
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['community', 'posts'] });
     },
-    onError: (error) => {
+    onError: error => {
       console.error('Error reacting to post:', error);
-    }
+    },
   });
 
   const handleReaction = async () => {
@@ -80,9 +83,7 @@ const ReactionButton: React.FC<ReactionButtonProps> = ({
             : 'text-gray-500 hover:text-red-500 hover:bg-red-50'
         }`}
       >
-        <Heart 
-          className={`w-4 h-4 ${hasReacted ? 'fill-current' : ''}`} 
-        />
+        <Heart className={`w-4 h-4 ${hasReacted ? 'fill-current' : ''}`} />
         <span className="text-sm font-medium">
           {reactionCount > 0 ? reactionCount : ''}
         </span>

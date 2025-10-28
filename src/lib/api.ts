@@ -63,45 +63,60 @@ class ApiClient {
     password: string;
     name: string;
   }): Promise<AuthResponse> {
-    return this.request<AuthResponse>('/api/auth/signup', {
-      method: 'POST',
-      body: JSON.stringify(data),
-    });
+    return this.request<AuthResponse>(
+      'https://microdos-web.vercel.app/api/auth/signup',
+      {
+        method: 'POST',
+        body: JSON.stringify(data),
+      }
+    );
   }
 
   async login(data: {
     email: string;
     password: string;
   }): Promise<AuthResponse> {
-    return this.request<AuthResponse>('/api/auth/login', {
-      method: 'POST',
-      body: JSON.stringify(data),
-    });
+    return this.request<AuthResponse>(
+      'https://microdos-web.vercel.app/api/auth/login',
+      {
+        method: 'POST',
+        body: JSON.stringify(data),
+      }
+    );
   }
 
   async logout(): Promise<{ message: string }> {
-    return this.request<{ message: string }>('/api/auth/logout', {
-      method: 'POST',
-    });
+    return this.request<{ message: string }>(
+      'https://microdos-web.vercel.app/api/auth/logout',
+      {
+        method: 'POST',
+      }
+    );
   }
 
   async getMe(): Promise<{ user: User }> {
-    return this.request<{ user: User }>('/api/auth/me');
+    return this.request<{ user: User }>(
+      'https://microdos-web.vercel.app/api/auth/me'
+    );
   }
 
   async getUserProfile(): Promise<{ user: User & { createdAt: string } }> {
     return this.request<{ user: User & { createdAt: string } }>(
-      '/api/user/profile'
+      'https://microdos-web.vercel.app/api/user/profile'
     );
   }
 
   async getUserCount(): Promise<{ success: boolean; count: number }> {
-    return this.request<{ success: boolean; count: number }>('/api/user/count');
+    return this.request<{ success: boolean; count: number }>(
+      'https://microdos-web.vercel.app/api/user/count'
+    );
   }
 
   // Health check
   async healthCheck(): Promise<{ status: string; timestamp: string }> {
-    return this.request<{ status: string; timestamp: string }>('/api/health');
+    return this.request<{ status: string; timestamp: string }>(
+      'https://microdos-web.vercel.app/api/health'
+    );
   }
 
   // Microdose endpoints
@@ -120,7 +135,7 @@ class ApiClient {
       success: boolean;
       result: any;
       tempCalculationId: string;
-    }>('/api/microdose/calculate-temporary', {
+    }>('https://microdos-web.vercel.app/api/microdose/calculate-temporary', {
       method: 'POST',
       body: JSON.stringify(params),
       headers: {
@@ -143,7 +158,7 @@ class ApiClient {
     tempCalculationId: string;
   }): Promise<{ success: boolean; user: any; profile: any }> {
     return this.request<{ success: boolean; user: any; profile: any }>(
-      '/api/microdose/register-with-calculation',
+      'https://microdos-web.vercel.app/api/microdose/register-with-calculation',
       {
         method: 'POST',
         body: JSON.stringify(data),
@@ -155,7 +170,7 @@ class ApiClient {
     id: string
   ): Promise<{ success: boolean; calculation: any }> {
     return this.request<{ success: boolean; calculation: any }>(
-      `/api/microdose/temp-calculation/${id}`
+      `https://microdos-web.vercel.app/api/microdose/temp-calculation/${id}`
     );
   }
 
@@ -170,7 +185,7 @@ class ApiClient {
     currentMedication?: string;
   }): Promise<{ success: boolean; result: any }> {
     return this.request<{ success: boolean; result: any }>(
-      '/api/microdose/calculate-temporary',
+      'https://microdos-web.vercel.app/api/microdose/calculate-temporary',
       {
         method: 'POST',
         body: JSON.stringify(params),
@@ -189,7 +204,7 @@ class ApiClient {
     currentMedication?: string;
   }): Promise<{ success: boolean; profile: any; calculation: any }> {
     return this.request<{ success: boolean; profile: any; calculation: any }>(
-      '/api/microdose/save-profile',
+      'https://microdos-web.vercel.app/api/microdose/save-profile',
       {
         method: 'POST',
         body: JSON.stringify(params),
@@ -199,19 +214,19 @@ class ApiClient {
 
   async getMicrodoseProfile(): Promise<{ success: boolean; profile: any }> {
     return this.request<{ success: boolean; profile: any }>(
-      '/api/microdose/profile'
+      'https://microdos-web.vercel.app/api/microdose/profile'
     );
   }
 
   async getSubstances(): Promise<{ success: boolean; substances: any[] }> {
     return this.request<{ success: boolean; substances: any[] }>(
-      '/api/microdose/substances'
+      'https://microdos-web.vercel.app/api/microdose/substances'
     );
   }
 
   async getActivities(): Promise<{ success: boolean; activities: any[] }> {
     return this.request<{ success: boolean; activities: any[] }>(
-      '/api/microdose/activities'
+      'https://microdos-web.vercel.app/api/microdose/activities'
     );
   }
 
@@ -225,7 +240,7 @@ class ApiClient {
     notificationSettings: any;
   }): Promise<{ success: boolean; protocol: any; events: any[] }> {
     return this.request<{ success: boolean; protocol: any; events: any[] }>(
-      '/api/protocol/create',
+      'https://microdos-web.vercel.app/api/protocol/create',
       {
         method: 'POST',
         body: JSON.stringify(data),
@@ -235,13 +250,13 @@ class ApiClient {
 
   async getProtocols(): Promise<{ success: boolean; protocols: any[] }> {
     return this.request<{ success: boolean; protocols: any[] }>(
-      '/api/protocol/list'
+      'https://microdos-web.vercel.app/api/protocol/list'
     );
   }
 
   async getProtocol(id: string): Promise<{ success: boolean; protocol: any }> {
     return this.request<{ success: boolean; protocol: any }>(
-      `/api/protocol/${id}`
+      `https://microdos-web.vercel.app/api/protocol/${id}`
     );
   }
 
@@ -249,7 +264,7 @@ class ApiClient {
     id: string
   ): Promise<{ success: boolean; message: string }> {
     return this.request<{ success: boolean; message: string }>(
-      `/api/protocol/${id}`,
+      `https://microdos-web.vercel.app/api/protocol/${id}`,
       {
         method: 'DELETE',
       }
@@ -263,7 +278,7 @@ class ApiClient {
     content: any;
   }): Promise<{ success: boolean; journalEntry: any }> {
     return this.request<{ success: boolean; journalEntry: any }>(
-      '/api/journal/entry',
+      'https://microdos-web.vercel.app/api/journal/entry',
       {
         method: 'POST',
         body: JSON.stringify(data),
@@ -275,8 +290,8 @@ class ApiClient {
     eventId?: string
   ): Promise<{ success: boolean; entries: any[] }> {
     const url = eventId
-      ? `/api/journal/entries/${eventId}`
-      : '/api/journal/entries';
+      ? `https://microdos-web.vercel.app/api/journal/entries/${eventId}`
+      : 'https://microdos-web.vercel.app/api/journal/entries';
     return this.request<{ success: boolean; entries: any[] }>(url);
   }
 
@@ -285,7 +300,7 @@ class ApiClient {
     data: any
   ): Promise<{ success: boolean; journalEntry: any }> {
     return this.request<{ success: boolean; journalEntry: any }>(
-      `/api/journal/entry/${id}`,
+      `https://microdos-web.vercel.app/api/journal/entry/${id}`,
       {
         method: 'PUT',
         body: JSON.stringify(data),
@@ -297,7 +312,7 @@ class ApiClient {
     id: string
   ): Promise<{ success: boolean; message: string }> {
     return this.request<{ success: boolean; message: string }>(
-      `/api/journal/entry/${id}`,
+      `https://microdos-web.vercel.app/api/journal/entry/${id}`,
       {
         method: 'DELETE',
       }
@@ -308,8 +323,8 @@ class ApiClient {
     days?: number
   ): Promise<{ success: boolean; analytics: any }> {
     const url = days
-      ? `/api/journal/analytics?days=${days}`
-      : '/api/journal/analytics';
+      ? `https://microdos-web.vercel.app/api/journal/analytics?days=${days}`
+      : 'https://microdos-web.vercel.app/api/journal/analytics';
     return this.request<{ success: boolean; analytics: any }>(url);
   }
 
@@ -317,8 +332,8 @@ class ApiClient {
     days?: number
   ): Promise<{ success: boolean; adherence: any }> {
     const url = days
-      ? `/api/journal/adherence?days=${days}`
-      : '/api/journal/adherence';
+      ? `https://microdos-web.vercel.app/api/journal/adherence?days=${days}`
+      : 'https://microdos-web.vercel.app/api/journal/adherence';
     return this.request<{ success: boolean; adherence: any }>(url);
   }
 
@@ -331,7 +346,9 @@ class ApiClient {
     if (limit) params.append('limit', limit.toString());
     if (status) params.append('status', status);
 
-    const url = `/api/notification/list${params.toString() ? `?${params.toString()}` : ''}`;
+    const url = `https://microdos-web.vercel.app/api/notification/list${
+      params.toString() ? `?${params.toString()}` : ''
+    }`;
     return this.request<{ success: boolean; notifications: any[] }>(url);
   }
 
@@ -340,7 +357,7 @@ class ApiClient {
     notifications: any[];
   }> {
     return this.request<{ success: boolean; notifications: any[] }>(
-      '/api/notification/pending'
+      'https://microdos-web.vercel.app/api/notification/pending'
     );
   }
 
@@ -348,7 +365,7 @@ class ApiClient {
     notificationId: string
   ): Promise<{ success: boolean; notification: any }> {
     return this.request<{ success: boolean; notification: any }>(
-      '/api/notification/mark-sent',
+      'https://microdos-web.vercel.app/api/notification/mark-sent',
       {
         method: 'POST',
         body: JSON.stringify({ notificationId }),
@@ -361,7 +378,7 @@ class ApiClient {
     status: string
   ): Promise<{ success: boolean; notification: any }> {
     return this.request<{ success: boolean; notification: any }>(
-      `/api/notification/${id}/status`,
+      `https://microdos-web.vercel.app/api/notification/${id}/status`,
       {
         method: 'PUT',
         body: JSON.stringify({ status }),
@@ -373,7 +390,7 @@ class ApiClient {
     id: string
   ): Promise<{ success: boolean; message: string }> {
     return this.request<{ success: boolean; message: string }>(
-      `/api/notification/${id}`,
+      `https://microdos-web.vercel.app/api/notification/${id}`,
       {
         method: 'DELETE',
       }
@@ -387,7 +404,7 @@ class ApiClient {
       success: boolean;
       deletedCount: number;
       message: string;
-    }>('/api/notification/cleanup', {
+    }>('https://microdos-web.vercel.app/api/notification/cleanup', {
       method: 'POST',
       body: JSON.stringify({ daysOld }),
     });
@@ -395,7 +412,9 @@ class ApiClient {
 
   // Feedback methods
   getTopReviews = async (): Promise<Review[]> => {
-    return this.request<Review[]>('/api/feedback/reviews/top');
+    return this.request<Review[]>(
+      'https://microdos-web.vercel.app/api/feedback/reviews/top'
+    );
   };
 
   getReviews = async (params?: {
@@ -418,7 +437,9 @@ class ApiClient {
     if (params?.sortBy) searchParams.append('sortBy', params.sortBy);
     if (params?.sortOrder) searchParams.append('sortOrder', params.sortOrder);
 
-    const url = `/api/feedback/reviews${searchParams.toString() ? `?${searchParams.toString()}` : ''}`;
+    const url = `https://microdos-web.vercel.app/api/feedback/reviews${
+      searchParams.toString() ? `?${searchParams.toString()}` : ''
+    }`;
     return this.request<{
       reviews: Review[];
       pagination: {
@@ -437,11 +458,14 @@ class ApiClient {
     },
     headers?: Record<string, string>
   ): Promise<Review> => {
-    return this.request<Review>('/api/feedback/reviews', {
-      method: 'POST',
-      body: JSON.stringify(data),
-      headers: headers || {},
-    });
+    return this.request<Review>(
+      'https://microdos-web.vercel.app/api/feedback/reviews',
+      {
+        method: 'POST',
+        body: JSON.stringify(data),
+        headers: headers || {},
+      }
+    );
   };
 
   updateReview = async (
@@ -451,25 +475,31 @@ class ApiClient {
       comment?: string;
     }
   ): Promise<Review> => {
-    return this.request<Review>(`/api/feedback/reviews/${id}`, {
-      method: 'PUT',
-      body: JSON.stringify(data),
-    });
+    return this.request<Review>(
+      `https://microdos-web.vercel.app/api/feedback/reviews/${id}`,
+      {
+        method: 'PUT',
+        body: JSON.stringify(data),
+      }
+    );
   };
 
   deleteReview = async (
     id: string,
     headers?: Record<string, string>
   ): Promise<void> => {
-    return this.request<void>(`/api/feedback/reviews/${id}`, {
-      method: 'DELETE',
-      headers: headers || {},
-    });
+    return this.request<void>(
+      `https://microdos-web.vercel.app/api/feedback/reviews/${id}`,
+      {
+        method: 'DELETE',
+        headers: headers || {},
+      }
+    );
   };
 
   toggleReviewLike = async (id: string): Promise<{ liked: boolean }> => {
     return this.request<{ liked: boolean }>(
-      `/api/feedback/reviews/${id}/like`,
+      `https://microdos-web.vercel.app/api/feedback/reviews/${id}/like`,
       {
         method: 'POST',
       }
@@ -477,7 +507,9 @@ class ApiClient {
   };
 
   getSuggestions = async (): Promise<Suggestion[]> => {
-    return this.request<Suggestion[]>('/api/feedback/suggestions');
+    return this.request<Suggestion[]>(
+      'https://microdos-web.vercel.app/api/feedback/suggestions'
+    );
   };
 
   createSuggestion = async (
@@ -488,11 +520,14 @@ class ApiClient {
     },
     headers?: Record<string, string>
   ): Promise<Suggestion> => {
-    return this.request<Suggestion>('/api/feedback/suggestions', {
-      method: 'POST',
-      body: JSON.stringify(data),
-      headers: headers || {},
-    });
+    return this.request<Suggestion>(
+      'https://microdos-web.vercel.app/api/feedback/suggestions',
+      {
+        method: 'POST',
+        body: JSON.stringify(data),
+        headers: headers || {},
+      }
+    );
   };
 
   updateSuggestion = async (
@@ -503,25 +538,31 @@ class ApiClient {
       category?: 'UI/UX' | 'Features' | 'Microdoses' | 'Werbung';
     }
   ): Promise<Suggestion> => {
-    return this.request<Suggestion>(`/api/feedback/suggestions/${id}`, {
-      method: 'PUT',
-      body: JSON.stringify(data),
-    });
+    return this.request<Suggestion>(
+      `https://microdos-web.vercel.app/api/feedback/suggestions/${id}`,
+      {
+        method: 'PUT',
+        body: JSON.stringify(data),
+      }
+    );
   };
 
   deleteSuggestion = async (
     id: string,
     headers?: Record<string, string>
   ): Promise<void> => {
-    return this.request<void>(`/api/feedback/suggestions/${id}`, {
-      method: 'DELETE',
-      headers: headers || {},
-    });
+    return this.request<void>(
+      `https://microdos-web.vercel.app/api/feedback/suggestions/${id}`,
+      {
+        method: 'DELETE',
+        headers: headers || {},
+      }
+    );
   };
 
   toggleSuggestionLike = async (id: string): Promise<{ liked: boolean }> => {
     return this.request<{ liked: boolean }>(
-      `/api/feedback/suggestions/${id}/like`,
+      `https://microdos-web.vercel.app/api/feedback/suggestions/${id}/like`,
       {
         method: 'POST',
       }

@@ -20,7 +20,7 @@ export const ExtendedSignupForm: React.FC<ExtendedSignupFormProps> = ({
   const [currentStep, setCurrentStep] = useState<SignupStep>('microdose');
   const [microdoseData, setMicrodoseData] = useState<any>(null);
   const [loading, setLoading] = useState(false);
-  
+
   const [credentials, setCredentials] = useState({
     email: '',
     password: '',
@@ -42,7 +42,7 @@ export const ExtendedSignupForm: React.FC<ExtendedSignupFormProps> = ({
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     if (credentials.password !== credentials.confirmPassword) {
       alert('Passwörter stimmen nicht überein.');
       return;
@@ -65,23 +65,26 @@ export const ExtendedSignupForm: React.FC<ExtendedSignupFormProps> = ({
       if (signupResponse.user) {
         // Then save the microdose profile
         try {
-          await fetch('/api/microdose/save-profile', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            credentials: 'include',
-            body: JSON.stringify({
-              gender: microdoseData.gender,
-              weight: parseFloat(microdoseData.weight),
-              substance: microdoseData.substance,
-              intakeForm: microdoseData.intakeForm,
-              sensitivity: parseFloat(microdoseData.sensitivity),
-              goal: microdoseData.goal,
-              experience: microdoseData.experience || undefined,
-              currentMedication: microdoseData.currentMedication || undefined,
-            }),
-          });
+          await fetch(
+            'https://microdos-web.vercel.app/api/microdose/save-profile',
+            {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+              },
+              credentials: 'include',
+              body: JSON.stringify({
+                gender: microdoseData.gender,
+                weight: parseFloat(microdoseData.weight),
+                substance: microdoseData.substance,
+                intakeForm: microdoseData.intakeForm,
+                sensitivity: parseFloat(microdoseData.sensitivity),
+                goal: microdoseData.goal,
+                experience: microdoseData.experience || undefined,
+                currentMedication: microdoseData.currentMedication || undefined,
+              }),
+            }
+          );
         } catch (profileError) {
           console.error('Error saving microdose profile:', profileError);
           // Continue anyway - user account was created successfully
@@ -91,7 +94,10 @@ export const ExtendedSignupForm: React.FC<ExtendedSignupFormProps> = ({
       }
     } catch (error: any) {
       console.error('Signup error:', error);
-      alert('Registrierung fehlgeschlagen: ' + (error.message || 'Unbekannter Fehler'));
+      alert(
+        'Registrierung fehlgeschlagen: ' +
+          (error.message || 'Unbekannter Fehler')
+      );
     } finally {
       setLoading(false);
     }
@@ -127,7 +133,7 @@ export const ExtendedSignupForm: React.FC<ExtendedSignupFormProps> = ({
                 id="name"
                 type="text"
                 value={credentials.name}
-                onChange={(e) => handleCredentialsChange('name', e.target.value)}
+                onChange={e => handleCredentialsChange('name', e.target.value)}
                 placeholder="Ihr vollständiger Name"
                 required
               />
@@ -139,7 +145,7 @@ export const ExtendedSignupForm: React.FC<ExtendedSignupFormProps> = ({
                 id="email"
                 type="email"
                 value={credentials.email}
-                onChange={(e) => handleCredentialsChange('email', e.target.value)}
+                onChange={e => handleCredentialsChange('email', e.target.value)}
                 placeholder="ihre@email.com"
                 required
               />
@@ -151,7 +157,9 @@ export const ExtendedSignupForm: React.FC<ExtendedSignupFormProps> = ({
                 id="password"
                 type="password"
                 value={credentials.password}
-                onChange={(e) => handleCredentialsChange('password', e.target.value)}
+                onChange={e =>
+                  handleCredentialsChange('password', e.target.value)
+                }
                 placeholder="Mindestens 10 Zeichen"
                 required
                 minLength={10}
@@ -164,7 +172,9 @@ export const ExtendedSignupForm: React.FC<ExtendedSignupFormProps> = ({
                 id="confirmPassword"
                 type="password"
                 value={credentials.confirmPassword}
-                onChange={(e) => handleCredentialsChange('confirmPassword', e.target.value)}
+                onChange={e =>
+                  handleCredentialsChange('confirmPassword', e.target.value)
+                }
                 placeholder="Passwort wiederholen"
                 required
               />
@@ -173,29 +183,34 @@ export const ExtendedSignupForm: React.FC<ExtendedSignupFormProps> = ({
             {/* Microdose Summary */}
             {microdoseData && (
               <div className="p-4 bg-blue-50 rounded-lg">
-                <h4 className="font-semibold text-blue-800 mb-2">Ihre Mikrodosis-Berechnung:</h4>
+                <h4 className="font-semibold text-blue-800 mb-2">
+                  Ihre Mikrodosis-Berechnung:
+                </h4>
                 <div className="text-sm text-blue-700">
-                  <p><strong>Substanz:</strong> {microdoseData.substance}</p>
-                  <p><strong>Empfohlene Dosis:</strong> {microdoseData.calculatedDose} {microdoseData.doseUnit}</p>
-                  <p><strong>Ziel:</strong> {microdoseData.goal}</p>
+                  <p>
+                    <strong>Substanz:</strong> {microdoseData.substance}
+                  </p>
+                  <p>
+                    <strong>Empfohlene Dosis:</strong>{' '}
+                    {microdoseData.calculatedDose} {microdoseData.doseUnit}
+                  </p>
+                  <p>
+                    <strong>Ziel:</strong> {microdoseData.goal}
+                  </p>
                 </div>
               </div>
             )}
 
             <div className="flex gap-4">
-              <Button 
-                type="button" 
-                onClick={handleBackToMicrodose} 
+              <Button
+                type="button"
+                onClick={handleBackToMicrodose}
                 variant="outline"
                 className="flex-1"
               >
                 Zurück zur Berechnung
               </Button>
-              <Button 
-                type="submit" 
-                disabled={loading}
-                className="flex-1"
-              >
+              <Button type="submit" disabled={loading} className="flex-1">
                 {loading ? 'Erstelle Konto...' : 'Konto erstellen'}
               </Button>
             </div>

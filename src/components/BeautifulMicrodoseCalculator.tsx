@@ -4,24 +4,24 @@ import { Button } from './ui/button';
 import { Input } from './ui/input';
 import { Label } from './ui/label';
 import { apiClient } from '../lib/api';
-import { 
-  GenderIcons, 
-  SubstanceIcons, 
-  IntakeFormIcons, 
-  GoalIcons, 
+import {
+  GenderIcons,
+  SubstanceIcons,
+  IntakeFormIcons,
+  GoalIcons,
   ExperienceIcons,
-  SensitivityIcon
+  SensitivityIcon,
 } from './icons/SelectionIcons';
-import { 
-  ChevronLeft, 
-  ChevronRight, 
-  Check, 
+import {
+  ChevronLeft,
+  ChevronRight,
+  Check,
   Sparkles,
   Weight,
   Calculator,
   Target,
   Brain,
-  Award
+  Award,
 } from 'lucide-react';
 
 interface Substance {
@@ -51,29 +51,52 @@ interface BeautifulMicrodoseCalculatorProps {
   onBack: () => void;
 }
 
-type Step = 'gender' | 'weight' | 'substance' | 'intakeForm' | 'sensitivity' | 'goal' | 'experience' | 'result';
+type Step =
+  | 'gender'
+  | 'weight'
+  | 'substance'
+  | 'intakeForm'
+  | 'sensitivity'
+  | 'goal'
+  | 'experience'
+  | 'result';
 
 const STEPS: { id: Step; title: string; icon: React.ReactNode }[] = [
-  { id: 'gender', title: 'Geschlecht', icon: <GenderIcons.male className="w-5 h-5" /> },
+  {
+    id: 'gender',
+    title: 'Geschlecht',
+    icon: <GenderIcons.male className="w-5 h-5" />,
+  },
   { id: 'weight', title: 'Gewicht', icon: <Weight className="w-5 h-5" /> },
-  { id: 'substance', title: 'Substanz', icon: <SubstanceIcons.psilocybin className="w-5 h-5" /> },
-  { id: 'intakeForm', title: 'Einnahmeform', icon: <IntakeFormIcons.dried_mushrooms className="w-5 h-5" /> },
-  { id: 'sensitivity', title: 'Empfindlichkeit', icon: <Brain className="w-5 h-5" /> },
+  {
+    id: 'substance',
+    title: 'Substanz',
+    icon: <SubstanceIcons.psilocybin className="w-5 h-5" />,
+  },
+  {
+    id: 'intakeForm',
+    title: 'Einnahmeform',
+    icon: <IntakeFormIcons.dried_mushrooms className="w-5 h-5" />,
+  },
+  {
+    id: 'sensitivity',
+    title: 'Empfindlichkeit',
+    icon: <Brain className="w-5 h-5" />,
+  },
   { id: 'goal', title: 'Ziel', icon: <Target className="w-5 h-5" /> },
   { id: 'experience', title: 'Erfahrung', icon: <Award className="w-5 h-5" /> },
-  { id: 'result', title: 'Ergebnis', icon: <Calculator className="w-5 h-5" /> }
+  { id: 'result', title: 'Ergebnis', icon: <Calculator className="w-5 h-5" /> },
 ];
 
-export const BeautifulMicrodoseCalculator: React.FC<BeautifulMicrodoseCalculatorProps> = ({
-  onComplete,
-  onBack,
-}) => {
+export const BeautifulMicrodoseCalculator: React.FC<
+  BeautifulMicrodoseCalculatorProps
+> = ({ onComplete, onBack }) => {
   const [currentStep, setCurrentStep] = useState(0);
   const [substances, setSubstances] = useState<Substance[]>([]);
   const [loading, setLoading] = useState(false);
   const [calculating, setCalculating] = useState(false);
   const [result, setResult] = useState<MicrodoseCalculationResult | null>(null);
-  
+
   const [formData, setFormData] = useState({
     gender: '',
     weight: '',
@@ -91,7 +114,9 @@ export const BeautifulMicrodoseCalculator: React.FC<BeautifulMicrodoseCalculator
 
   const fetchSubstances = async () => {
     try {
-      const response = await fetch('/api/microdose/substances');
+      const response = await fetch(
+        'https://microdos-web.vercel.app/api/microdose/substances'
+      );
       const data = await response.json();
       setSubstances(data.substances);
     } catch (error) {
@@ -104,7 +129,7 @@ export const BeautifulMicrodoseCalculator: React.FC<BeautifulMicrodoseCalculator
       ...prev,
       [field]: value,
     }));
-    
+
     // Reset intake form when substance changes
     if (field === 'substance') {
       setFormData(prev => ({
@@ -115,7 +140,13 @@ export const BeautifulMicrodoseCalculator: React.FC<BeautifulMicrodoseCalculator
     }
 
     // Auto-advance to next step for single-choice fields
-    const autoAdvanceFields = ['gender', 'substance', 'intakeForm', 'goal', 'experience'];
+    const autoAdvanceFields = [
+      'gender',
+      'substance',
+      'intakeForm',
+      'goal',
+      'experience',
+    ];
     if (autoAdvanceFields.includes(field)) {
       setTimeout(() => {
         if (currentStep < STEPS.length - 1) {
@@ -192,15 +223,34 @@ export const BeautifulMicrodoseCalculator: React.FC<BeautifulMicrodoseCalculator
         return (
           <div className="space-y-6">
             <div className="text-center">
-              <h3 className="text-xl font-semibold mb-2">Wählen Sie Ihr Geschlecht</h3>
-              <p className="text-gray-600">Dies hilft bei der personalisierten Berechnung</p>
+              <h3 className="text-xl font-semibold mb-2">
+                Wählen Sie Ihr Geschlecht
+              </h3>
+              <p className="text-gray-600">
+                Dies hilft bei der personalisierten Berechnung
+              </p>
             </div>
             <div className="grid grid-cols-1 gap-4">
               {[
-                { id: 'male', label: 'Männlich', icon: GenderIcons.male, color: 'blue' },
-                { id: 'female', label: 'Weiblich', icon: GenderIcons.female, color: 'pink' },
-                { id: 'other', label: 'Andere', icon: GenderIcons.other, color: 'purple' }
-              ].map((option) => {
+                {
+                  id: 'male',
+                  label: 'Männlich',
+                  icon: GenderIcons.male,
+                  color: 'blue',
+                },
+                {
+                  id: 'female',
+                  label: 'Weiblich',
+                  icon: GenderIcons.female,
+                  color: 'pink',
+                },
+                {
+                  id: 'other',
+                  label: 'Andere',
+                  icon: GenderIcons.other,
+                  color: 'purple',
+                },
+              ].map(option => {
                 const IconComponent = option.icon;
                 return (
                   <button
@@ -213,13 +263,19 @@ export const BeautifulMicrodoseCalculator: React.FC<BeautifulMicrodoseCalculator
                     }`}
                   >
                     <div className="flex items-center space-x-4">
-                      <div className={`p-3 rounded-xl ${
-                        formData.gender === option.id ? `bg-${option.color}-100` : 'bg-gray-100'
-                      }`}>
+                      <div
+                        className={`p-3 rounded-xl ${
+                          formData.gender === option.id
+                            ? `bg-${option.color}-100`
+                            : 'bg-gray-100'
+                        }`}
+                      >
                         <IconComponent className="w-8 h-8" />
                       </div>
                       <div className="text-left">
-                        <div className="font-semibold text-lg">{option.label}</div>
+                        <div className="font-semibold text-lg">
+                          {option.label}
+                        </div>
                       </div>
                       {formData.gender === option.id && (
                         <Check className="w-6 h-6 text-green-500 ml-auto" />
@@ -237,7 +293,9 @@ export const BeautifulMicrodoseCalculator: React.FC<BeautifulMicrodoseCalculator
           <div className="space-y-6">
             <div className="text-center">
               <h3 className="text-xl font-semibold mb-2">Ihr Körpergewicht</h3>
-              <p className="text-gray-600">Geben Sie Ihr Gewicht in Kilogramm ein</p>
+              <p className="text-gray-600">
+                Geben Sie Ihr Gewicht in Kilogramm ein
+              </p>
             </div>
             <div className="max-w-md mx-auto">
               <div className="relative">
@@ -247,7 +305,7 @@ export const BeautifulMicrodoseCalculator: React.FC<BeautifulMicrodoseCalculator
                   min="30"
                   max="200"
                   value={formData.weight}
-                  onChange={(e) => handleInputChange('weight', e.target.value)}
+                  onChange={e => handleInputChange('weight', e.target.value)}
                   placeholder="z.B. 70"
                   className="pl-12 text-center text-xl py-4 rounded-xl border-2"
                 />
@@ -263,12 +321,17 @@ export const BeautifulMicrodoseCalculator: React.FC<BeautifulMicrodoseCalculator
         return (
           <div className="space-y-6">
             <div className="text-center">
-              <h3 className="text-xl font-semibold mb-2">Wählen Sie die Substanz</h3>
-              <p className="text-gray-600">Für welche Substanz möchten Sie eine Mikrodosis berechnen?</p>
+              <h3 className="text-xl font-semibold mb-2">
+                Wählen Sie die Substanz
+              </h3>
+              <p className="text-gray-600">
+                Für welche Substanz möchten Sie eine Mikrodosis berechnen?
+              </p>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              {substances.map((substance) => {
-                const IconComponent = SubstanceIcons[substance.id as keyof typeof SubstanceIcons];
+              {substances.map(substance => {
+                const IconComponent =
+                  SubstanceIcons[substance.id as keyof typeof SubstanceIcons];
                 return (
                   <button
                     key={substance.id}
@@ -280,14 +343,22 @@ export const BeautifulMicrodoseCalculator: React.FC<BeautifulMicrodoseCalculator
                     }`}
                   >
                     <div className="flex items-center space-x-4">
-                      <div className={`p-3 rounded-xl ${
-                        formData.substance === substance.id ? 'bg-blue-100' : 'bg-gray-100'
-                      }`}>
+                      <div
+                        className={`p-3 rounded-xl ${
+                          formData.substance === substance.id
+                            ? 'bg-blue-100'
+                            : 'bg-gray-100'
+                        }`}
+                      >
                         <IconComponent className="w-8 h-8" />
                       </div>
                       <div className="text-left flex-1">
-                        <div className="font-semibold text-lg">{substance.name}</div>
-                        <div className="text-sm text-gray-600">{substance.description}</div>
+                        <div className="font-semibold text-lg">
+                          {substance.name}
+                        </div>
+                        <div className="text-sm text-gray-600">
+                          {substance.description}
+                        </div>
                       </div>
                       {formData.substance === substance.id && (
                         <Check className="w-6 h-6 text-green-500" />
@@ -305,11 +376,14 @@ export const BeautifulMicrodoseCalculator: React.FC<BeautifulMicrodoseCalculator
           <div className="space-y-6">
             <div className="text-center">
               <h3 className="text-xl font-semibold mb-2">Einnahmeform</h3>
-              <p className="text-gray-600">In welcher Form möchten Sie die Substanz einnehmen?</p>
+              <p className="text-gray-600">
+                In welcher Form möchten Sie die Substanz einnehmen?
+              </p>
             </div>
             <div className="grid grid-cols-1 gap-4">
-              {selectedSubstance?.intakeForms.map((form) => {
-                const IconComponent = IntakeFormIcons[form.id as keyof typeof IntakeFormIcons];
+              {selectedSubstance?.intakeForms.map(form => {
+                const IconComponent =
+                  IntakeFormIcons[form.id as keyof typeof IntakeFormIcons];
                 return (
                   <button
                     key={form.id}
@@ -321,9 +395,13 @@ export const BeautifulMicrodoseCalculator: React.FC<BeautifulMicrodoseCalculator
                     }`}
                   >
                     <div className="flex items-center space-x-3">
-                      <div className={`p-2 rounded-lg ${
-                        formData.intakeForm === form.id ? 'bg-green-100' : 'bg-gray-100'
-                      }`}>
+                      <div
+                        className={`p-2 rounded-lg ${
+                          formData.intakeForm === form.id
+                            ? 'bg-green-100'
+                            : 'bg-gray-100'
+                        }`}
+                      >
                         <IconComponent className="w-6 h-6" />
                       </div>
                       <div className="font-medium">{form.name}</div>
@@ -343,12 +421,16 @@ export const BeautifulMicrodoseCalculator: React.FC<BeautifulMicrodoseCalculator
           <div className="space-y-6">
             <div className="text-center">
               <h3 className="text-xl font-semibold mb-2">Empfindlichkeit</h3>
-              <p className="text-gray-600">Wie empfindlich reagieren Sie auf psychedelische Substanzen?</p>
+              <p className="text-gray-600">
+                Wie empfindlich reagieren Sie auf psychedelische Substanzen?
+              </p>
             </div>
             <div className="max-w-md mx-auto space-y-4">
               <div className="flex items-center justify-center space-x-2 mb-4">
                 <SensitivityIcon className="w-5 h-5 text-purple-500" />
-                <span className="text-sm font-medium text-gray-600">Empfindlichkeit: {formData.sensitivity}x</span>
+                <span className="text-sm font-medium text-gray-600">
+                  Empfindlichkeit: {formData.sensitivity}x
+                </span>
               </div>
               <input
                 type="range"
@@ -356,7 +438,9 @@ export const BeautifulMicrodoseCalculator: React.FC<BeautifulMicrodoseCalculator
                 max="1.5"
                 step="0.1"
                 value={formData.sensitivity}
-                onChange={(e) => handleInputChange('sensitivity', parseFloat(e.target.value))}
+                onChange={e =>
+                  handleInputChange('sensitivity', parseFloat(e.target.value))
+                }
                 className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer slider"
               />
               <div className="flex justify-between text-xs text-gray-500">
@@ -372,33 +456,37 @@ export const BeautifulMicrodoseCalculator: React.FC<BeautifulMicrodoseCalculator
         return (
           <div className="space-y-6">
             <div className="text-center">
-              <h3 className="text-xl font-semibold mb-2">Ziel der Mikrodosierung</h3>
-              <p className="text-gray-600">Was möchten Sie mit der Mikrodosierung erreichen?</p>
+              <h3 className="text-xl font-semibold mb-2">
+                Ziel der Mikrodosierung
+              </h3>
+              <p className="text-gray-600">
+                Was möchten Sie mit der Mikrodosierung erreichen?
+              </p>
             </div>
             <div className="grid grid-cols-1 gap-4">
               {[
-                { 
-                  id: 'sub_perceptual', 
-                  label: 'Sub-perzeptuell', 
+                {
+                  id: 'sub_perceptual',
+                  label: 'Sub-perzeptuell',
                   description: '5% der Normaldosis - kaum spürbar',
                   icon: GoalIcons.sub_perceptual,
-                  color: 'green'
+                  color: 'green',
                 },
-                { 
-                  id: 'standard', 
-                  label: 'Standard', 
+                {
+                  id: 'standard',
+                  label: 'Standard',
                   description: '10% der Normaldosis - typische Mikrodosis',
                   icon: GoalIcons.standard,
-                  color: 'blue'
+                  color: 'blue',
                 },
-                { 
-                  id: 'upper_microdose', 
-                  label: 'Obere Mikrodosis', 
+                {
+                  id: 'upper_microdose',
+                  label: 'Obere Mikrodosis',
                   description: '20% der Normaldosis - leicht spürbar',
                   icon: GoalIcons.upper_microdose,
-                  color: 'orange'
-                }
-              ].map((option) => {
+                  color: 'orange',
+                },
+              ].map(option => {
                 const IconComponent = option.icon;
                 return (
                   <button
@@ -411,14 +499,20 @@ export const BeautifulMicrodoseCalculator: React.FC<BeautifulMicrodoseCalculator
                     }`}
                   >
                     <div className="flex items-center space-x-3">
-                      <div className={`p-2 rounded-lg ${
-                        formData.goal === option.id ? `bg-${option.color}-100` : 'bg-gray-100'
-                      }`}>
+                      <div
+                        className={`p-2 rounded-lg ${
+                          formData.goal === option.id
+                            ? `bg-${option.color}-100`
+                            : 'bg-gray-100'
+                        }`}
+                      >
                         <IconComponent className="w-6 h-6" />
                       </div>
                       <div className="text-left flex-1">
                         <div className="font-medium">{option.label}</div>
-                        <div className="text-sm text-gray-600">{option.description}</div>
+                        <div className="text-sm text-gray-600">
+                          {option.description}
+                        </div>
                       </div>
                       {formData.goal === option.id && (
                         <Check className="w-5 h-5 text-green-500" />
@@ -435,33 +529,37 @@ export const BeautifulMicrodoseCalculator: React.FC<BeautifulMicrodoseCalculator
         return (
           <div className="space-y-6">
             <div className="text-center">
-              <h3 className="text-xl font-semibold mb-2">Erfahrung (Optional)</h3>
-              <p className="text-gray-600">Wie erfahren sind Sie mit psychedelischen Substanzen?</p>
+              <h3 className="text-xl font-semibold mb-2">
+                Erfahrung (Optional)
+              </h3>
+              <p className="text-gray-600">
+                Wie erfahren sind Sie mit psychedelischen Substanzen?
+              </p>
             </div>
             <div className="grid grid-cols-1 gap-4">
               {[
-                { 
-                  id: 'beginner', 
-                  label: 'Anfänger', 
+                {
+                  id: 'beginner',
+                  label: 'Anfänger',
                   description: 'Wenig bis keine Erfahrung',
                   icon: ExperienceIcons.beginner,
-                  color: 'blue'
+                  color: 'blue',
                 },
-                { 
-                  id: 'intermediate', 
-                  label: 'Fortgeschritten', 
+                {
+                  id: 'intermediate',
+                  label: 'Fortgeschritten',
                   description: 'Einige Erfahrungen vorhanden',
                   icon: ExperienceIcons.intermediate,
-                  color: 'green'
+                  color: 'green',
                 },
-                { 
-                  id: 'experienced', 
-                  label: 'Erfahren', 
+                {
+                  id: 'experienced',
+                  label: 'Erfahren',
                   description: 'Viel Erfahrung mit Psychedelika',
                   icon: ExperienceIcons.experienced,
-                  color: 'purple'
-                }
-              ].map((option) => {
+                  color: 'purple',
+                },
+              ].map(option => {
                 const IconComponent = option.icon;
                 return (
                   <button
@@ -474,14 +572,20 @@ export const BeautifulMicrodoseCalculator: React.FC<BeautifulMicrodoseCalculator
                     }`}
                   >
                     <div className="flex items-center space-x-3">
-                      <div className={`p-2 rounded-lg ${
-                        formData.experience === option.id ? `bg-${option.color}-100` : 'bg-gray-100'
-                      }`}>
+                      <div
+                        className={`p-2 rounded-lg ${
+                          formData.experience === option.id
+                            ? `bg-${option.color}-100`
+                            : 'bg-gray-100'
+                        }`}
+                      >
                         <IconComponent className="w-6 h-6" />
                       </div>
                       <div className="text-left flex-1">
                         <div className="font-medium">{option.label}</div>
-                        <div className="text-sm text-gray-600">{option.description}</div>
+                        <div className="text-sm text-gray-600">
+                          {option.description}
+                        </div>
                       </div>
                       {formData.experience === option.id && (
                         <Check className="w-5 h-5 text-green-500" />
@@ -499,7 +603,9 @@ export const BeautifulMicrodoseCalculator: React.FC<BeautifulMicrodoseCalculator
           return (
             <div className="text-center space-y-4">
               <Sparkles className="w-16 h-16 text-blue-500 mx-auto" />
-              <h3 className="text-xl font-semibold">Berechne Ihre Mikrodosis...</h3>
+              <h3 className="text-xl font-semibold">
+                Berechne Ihre Mikrodosis...
+              </h3>
               <p className="text-gray-600">Dies kann einen Moment dauern</p>
             </div>
           );
@@ -511,7 +617,9 @@ export const BeautifulMicrodoseCalculator: React.FC<BeautifulMicrodoseCalculator
               <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
                 <Calculator className="w-8 h-8 text-green-600" />
               </div>
-              <h3 className="text-2xl font-bold text-green-600 mb-2">Ihre Mikrodosis</h3>
+              <h3 className="text-2xl font-bold text-green-600 mb-2">
+                Ihre Mikrodosis
+              </h3>
               <div className="text-4xl font-bold text-gray-800 mb-2">
                 {result.calculatedDose.toFixed(1)} {result.doseUnit}
               </div>
@@ -523,19 +631,27 @@ export const BeautifulMicrodoseCalculator: React.FC<BeautifulMicrodoseCalculator
               <div className="grid grid-cols-2 gap-4 text-sm">
                 <div>
                   <span className="text-gray-600">Basisdosis:</span>
-                  <span className="font-medium ml-2">{result.baseDose} {result.doseUnit}</span>
+                  <span className="font-medium ml-2">
+                    {result.baseDose} {result.doseUnit}
+                  </span>
                 </div>
                 <div>
                   <span className="text-gray-600">Gewichtsfaktor:</span>
-                  <span className="font-medium ml-2">{result.weightFactor.toFixed(2)}x</span>
+                  <span className="font-medium ml-2">
+                    {result.weightFactor.toFixed(2)}x
+                  </span>
                 </div>
                 <div>
                   <span className="text-gray-600">Empfindlichkeit:</span>
-                  <span className="font-medium ml-2">{result.sensitivityFactor.toFixed(2)}x</span>
+                  <span className="font-medium ml-2">
+                    {result.sensitivityFactor.toFixed(2)}x
+                  </span>
                 </div>
                 <div>
                   <span className="text-gray-600">Ziel-Faktor:</span>
-                  <span className="font-medium ml-2">{result.goalFactor.toFixed(2)}x</span>
+                  <span className="font-medium ml-2">
+                    {result.goalFactor.toFixed(2)}x
+                  </span>
                 </div>
               </div>
             </div>
@@ -550,7 +666,9 @@ export const BeautifulMicrodoseCalculator: React.FC<BeautifulMicrodoseCalculator
                 <h4 className="font-semibold text-lg mb-2">Empfehlungen:</h4>
                 <ul className="space-y-1">
                   {result.recommendations.map((rec, index) => (
-                    <li key={index} className="text-gray-700">• {rec}</li>
+                    <li key={index} className="text-gray-700">
+                      • {rec}
+                    </li>
                   ))}
                 </ul>
               </div>
@@ -603,7 +721,9 @@ export const BeautifulMicrodoseCalculator: React.FC<BeautifulMicrodoseCalculator
           <CardTitle className="text-3xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
             🧮 Mikrodosierungs-Berechner
           </CardTitle>
-          <p className="text-gray-600 mt-2">Personalisierte Berechnung Ihrer optimalen Mikrodosis</p>
+          <p className="text-gray-600 mt-2">
+            Personalisierte Berechnung Ihrer optimalen Mikrodosis
+          </p>
         </CardHeader>
 
         <CardContent className="space-y-8">
@@ -611,11 +731,13 @@ export const BeautifulMicrodoseCalculator: React.FC<BeautifulMicrodoseCalculator
           <div className="flex items-center justify-between">
             {STEPS.map((step, index) => (
               <div key={step.id} className="flex items-center">
-                <div className={`flex items-center justify-center w-10 h-10 rounded-full border-2 transition-all duration-300 ${
-                  index <= currentStep
-                    ? 'bg-blue-500 border-blue-500 text-white'
-                    : 'bg-white border-gray-300 text-gray-400'
-                }`}>
+                <div
+                  className={`flex items-center justify-center w-10 h-10 rounded-full border-2 transition-all duration-300 ${
+                    index <= currentStep
+                      ? 'bg-blue-500 border-blue-500 text-white'
+                      : 'bg-white border-gray-300 text-gray-400'
+                  }`}
+                >
                   {index < currentStep ? (
                     <Check className="w-5 h-5" />
                   ) : (
@@ -623,9 +745,11 @@ export const BeautifulMicrodoseCalculator: React.FC<BeautifulMicrodoseCalculator
                   )}
                 </div>
                 {index < STEPS.length - 1 && (
-                  <div className={`w-16 h-1 mx-2 transition-all duration-300 ${
-                    index < currentStep ? 'bg-blue-500' : 'bg-gray-300'
-                  }`} />
+                  <div
+                    className={`w-16 h-1 mx-2 transition-all duration-300 ${
+                      index < currentStep ? 'bg-blue-500' : 'bg-gray-300'
+                    }`}
+                  />
                 )}
               </div>
             ))}
@@ -658,8 +782,11 @@ export const BeautifulMicrodoseCalculator: React.FC<BeautifulMicrodoseCalculator
                 className="flex items-center space-x-2 bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-600 hover:to-purple-600"
               >
                 <span>
-                  {calculating ? 'Berechne...' : 
-                   currentStepData.id === 'experience' ? 'Berechnen' : 'Weiter'}
+                  {calculating
+                    ? 'Berechne...'
+                    : currentStepData.id === 'experience'
+                    ? 'Berechnen'
+                    : 'Weiter'}
                 </span>
                 {!calculating && <ChevronRight className="w-4 h-4" />}
               </Button>
