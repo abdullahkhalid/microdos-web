@@ -1,0 +1,520 @@
+/* ========================================
+   MICRODOSE WIZARD ENHANCEMENTS
+   ======================================== */
+
+/* Wizard container animations */
+.wizard-container {
+  position: relative;
+  overflow: hidden;
+}
+
+.wizard-container::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(0, 184, 169, 0.1),
+    transparent
+  );
+  animation: wizardShimmer 3s infinite;
+}
+
+@keyframes wizardShimmer {
+  0% {
+    left: -100%;
+  }
+  100% {
+    left: 100%;
+  }
+}
+
+/* Step transition animations */
+.step-enter {
+  opacity: 0;
+  transform: translateX(30px);
+}
+
+.step-enter-active {
+  opacity: 1;
+  transform: translateX(0);
+  transition: opacity 300ms ease-out, transform 300ms ease-out;
+}
+
+.step-exit {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.step-exit-active {
+  opacity: 0;
+  transform: translateX(-30px);
+  transition: opacity 300ms ease-in, transform 300ms ease-in;
+}
+
+/* Progress bar animations */
+.progress-line {
+  position: relative;
+  overflow: hidden;
+}
+
+.progress-line::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.4),
+    transparent
+  );
+  animation: progressShimmer 2s infinite;
+}
+
+@keyframes progressShimmer {
+  0% {
+    left: -100%;
+  }
+  100% {
+    left: 100%;
+  }
+}
+
+/* Step circle animations */
+.step-circle {
+  position: relative;
+  overflow: hidden;
+}
+
+.step-circle::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  background: rgba(0, 184, 169, 0.2);
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  transition: all 0.3s ease-out;
+}
+
+.step-circle:hover::before {
+  width: 120%;
+  height: 120%;
+}
+
+.step-circle.active::before {
+  width: 120%;
+  height: 120%;
+  background: rgba(0, 184, 169, 0.1);
+}
+
+/* Mobile progress toggle */
+.mobile-progress-toggle {
+  position: relative;
+  overflow: hidden;
+}
+
+.mobile-progress-toggle::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(0, 184, 169, 0.1),
+    transparent
+  );
+  transition: left 0.5s ease;
+}
+
+.mobile-progress-toggle:hover::before {
+  left: 100%;
+}
+
+/* Mobile progress details */
+.mobile-progress-details {
+  animation: slideDown 0.3s ease-out;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Validation error animations */
+.validation-error {
+  animation: shake 0.5s ease-in-out;
+}
+
+@keyframes shake {
+  0%, 100% {
+    transform: translateX(0);
+  }
+  25% {
+    transform: translateX(-5px);
+  }
+  75% {
+    transform: translateX(5px);
+  }
+}
+
+/* Button hover effects */
+.wizard-button {
+  position: relative;
+  overflow: hidden;
+}
+
+.wizard-button::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.2),
+    transparent
+  );
+  transition: left 0.5s ease;
+}
+
+.wizard-button:hover::before {
+  left: 100%;
+}
+
+/* Loading spinner enhancements */
+.loading-spinner {
+  position: relative;
+}
+
+.loading-spinner::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 20px;
+  height: 20px;
+  margin: -10px 0 0 -10px;
+  border: 2px solid transparent;
+  border-top: 2px solid #00B8A9;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+/* Card hover effects */
+.wizard-card {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.wizard-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+}
+
+/* Mobile-specific styles */
+@media (max-width: 767px) {
+  .wizard-container {
+    padding: 1rem;
+  }
+
+  .wizard-card {
+    margin: 0;
+    border-radius: 1rem;
+  }
+
+  .step-circle {
+    width: 2.5rem;
+    height: 2.5rem;
+  }
+
+  .progress-line {
+    height: 2px;
+  }
+
+  /* Touch-friendly button sizing */
+  .wizard-button {
+    min-height: 44px;
+    padding: 12px 16px;
+  }
+
+  /* Mobile step content */
+  .step-content {
+    padding: 1.5rem;
+  }
+
+  .step-content h3 {
+    font-size: 1.5rem;
+    line-height: 1.3;
+  }
+
+  .step-content p {
+    font-size: 1rem;
+    line-height: 1.5;
+  }
+
+  /* Mobile form elements */
+  .wizard-input {
+    font-size: 1rem;
+    padding: 12px 16px;
+  }
+
+  .wizard-select {
+    font-size: 1rem;
+    padding: 12px 16px;
+  }
+
+  /* Mobile grid adjustments */
+  .wizard-grid-1 {
+    grid-template-columns: 1fr;
+    gap: 0.75rem;
+  }
+
+  .wizard-grid-2 {
+    grid-template-columns: 1fr;
+    gap: 0.75rem;
+  }
+
+  .wizard-grid-3 {
+    grid-template-columns: 1fr;
+    gap: 0.75rem;
+  }
+
+  /* Mobile navigation */
+  .wizard-navigation {
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .wizard-navigation .wizard-button {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
+/* Tablet styles */
+@media (min-width: 768px) and (max-width: 1023px) {
+  .wizard-grid-2 {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .wizard-grid-3 {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* Desktop styles */
+@media (min-width: 1024px) {
+  .wizard-grid-2 {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .wizard-grid-3 {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .wizard-navigation {
+    flex-direction: row;
+    justify-content: space-between;
+  }
+}
+
+/* Accessibility improvements */
+.wizard-button:focus-visible {
+  outline: 2px solid #00B8A9;
+  outline-offset: 2px;
+}
+
+.wizard-input:focus-visible,
+.wizard-select:focus-visible {
+  outline: 2px solid #00B8A9;
+  outline-offset: 2px;
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+  .wizard-card {
+    border: 2px solid;
+  }
+
+  .step-circle {
+    border-width: 3px;
+  }
+
+  .progress-line {
+    height: 3px;
+  }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  .wizard-container::before,
+  .progress-line::after,
+  .step-circle::before,
+  .mobile-progress-toggle::before,
+  .wizard-button::before {
+    animation: none;
+    display: none;
+  }
+
+  .step-enter,
+  .step-enter-active,
+  .step-exit,
+  .step-exit-active {
+    transition: none;
+  }
+
+  .wizard-card:hover {
+    transform: none;
+  }
+
+  .step-circle:hover::before {
+    width: 0;
+    height: 0;
+  }
+}
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+  .wizard-container {
+    background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+  }
+
+  .wizard-card {
+    background: rgba(30, 30, 30, 0.95);
+    border-color: #404040;
+  }
+
+  .step-circle {
+    background: #2a2a2a;
+    border-color: #404040;
+    color: #e5e5e5;
+  }
+
+  .progress-line {
+    background: #404040;
+  }
+
+  .wizard-button {
+    background: #2a2a2a;
+    border-color: #404040;
+    color: #e5e5e5;
+  }
+
+  .wizard-button:hover {
+    background: #404040;
+  }
+}
+
+/* Loading states */
+.wizard-loading {
+  position: relative;
+  pointer-events: none;
+}
+
+.wizard-loading::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(2px);
+  z-index: 10;
+}
+
+/* Success animations */
+.wizard-success {
+  animation: successPulse 0.6s ease-in-out;
+}
+
+@keyframes successPulse {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+/* Error animations */
+.wizard-error {
+  animation: errorShake 0.5s ease-in-out;
+}
+
+@keyframes errorShake {
+  0%, 100% {
+    transform: translateX(0);
+  }
+  25% {
+    transform: translateX(-5px);
+  }
+  75% {
+    transform: translateX(5px);
+  }
+}
+
+/* Smooth scrolling */
+.wizard-scroll {
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Performance optimizations */
+.wizard-container,
+.wizard-card,
+.step-circle,
+.wizard-button {
+  will-change: transform, opacity;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+
+/* Print styles */
+@media print {
+  .wizard-navigation,
+  .mobile-progress-toggle,
+  .wizard-container::before {
+    display: none;
+  }
+
+  .wizard-card {
+    box-shadow: none;
+    border: 1px solid #000;
+  }
+}
+
+
+

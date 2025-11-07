@@ -4,6 +4,7 @@ import { useAuth } from '@/hooks/useAuth';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Layout } from '@/components/Layout';
+import { DashboardTabNavigation } from '@/components/DashboardTabNavigation';
 import { AdherenceHeatmap } from '@/components/AdherenceHeatmap';
 import { apiClient } from '@/lib/api';
 import { 
@@ -24,6 +25,7 @@ import {
   Home
 } from 'lucide-react';
 import { Link, useLocation } from 'react-router-dom';
+import '../styles/dashboard-tabs.css';
 
 export function AnalyticsPage() {
   const { user } = useAuth();
@@ -116,62 +118,7 @@ export function AnalyticsPage() {
           <div className="max-w-6xl mx-auto">
             
             {/* Tab Navigation */}
-            <div className="mb-8">
-              <div className="flex space-x-1 bg-white/90 backdrop-blur-sm rounded-2xl p-2 shadow-lg max-w-2xl">
-                <Link
-                  to="/dashboard"
-                  className={`flex-1 py-3 px-4 rounded-xl font-medium transition-all duration-300 ${
-                    activeTab === 'dashboard'
-                      ? 'bg-gradient-to-r from-turquoise-500 to-lilac-500 text-white shadow-lg'
-                      : 'text-slate-600 hover:text-turquoise-600 hover:bg-turquoise-50'
-                  }`}
-                >
-                  <div className="flex items-center justify-center space-x-2">
-                    <Home className="w-4 h-4" />
-                    <span>Dashboard</span>
-                  </div>
-                </Link>
-                <Link
-                  to="/dashboard/protocols"
-                  className={`flex-1 py-3 px-4 rounded-xl font-medium transition-all duration-300 ${
-                    activeTab === 'protocols'
-                      ? 'bg-gradient-to-r from-turquoise-500 to-lilac-500 text-white shadow-lg'
-                      : 'text-slate-600 hover:text-turquoise-600 hover:bg-turquoise-50'
-                  }`}
-                >
-                  <div className="flex items-center justify-center space-x-2">
-                    <Calendar className="w-4 h-4" />
-                    <span>Protokolle</span>
-                  </div>
-                </Link>
-                <Link
-                  to="/dashboard/analytics"
-                  className={`flex-1 py-3 px-4 rounded-xl font-medium transition-all duration-300 ${
-                    activeTab === 'analytics'
-                      ? 'bg-gradient-to-r from-turquoise-500 to-lilac-500 text-white shadow-lg'
-                      : 'text-slate-600 hover:text-turquoise-600 hover:bg-turquoise-50'
-                  }`}
-                >
-                  <div className="flex items-center justify-center space-x-2">
-                    <BarChart3 className="w-4 h-4" />
-                    <span>Analytics</span>
-                  </div>
-                </Link>
-                <Link
-                  to="/dashboard/calendar"
-                  className={`flex-1 py-3 px-4 rounded-xl font-medium transition-all duration-300 ${
-                    activeTab === 'calendar'
-                      ? 'bg-gradient-to-r from-turquoise-500 to-lilac-500 text-white shadow-lg'
-                      : 'text-slate-600 hover:text-turquoise-600 hover:bg-turquoise-50'
-                  }`}
-                >
-                  <div className="flex items-center justify-center space-x-2">
-                    <Calendar className="w-4 h-4" />
-                    <span>Kalender</span>
-                  </div>
-                </Link>
-              </div>
-            </div>
+            <DashboardTabNavigation />
 
           {/* Header */}
           <div className="flex items-center justify-between mb-8">

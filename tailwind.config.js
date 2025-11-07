@@ -259,8 +259,10 @@ export default {
       },
       fontFamily: {
         'serif': ['Playfair Display', 'Georgia', 'serif'],
-        'sans': ['Inter', 'system-ui', 'sans-serif'],
-        'soft': ['Nunito', 'Poppins', 'system-ui', 'sans-serif'],
+        'sans': ['Open Sauce Sans', 'Inter', 'system-ui', 'sans-serif'],
+        'soft': ['Open Sauce Sans', 'Inter', 'system-ui', 'sans-serif'],
+        'primary': ['Open Sauce Sans', 'Inter', 'system-ui', 'sans-serif'],
+        'heading': ['Open Sauce Sans', 'Inter', 'system-ui', 'sans-serif'],
       },
       borderRadius: {
         lg: "var(--radius)",

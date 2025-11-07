@@ -4,6 +4,7 @@ import { Button } from '@/components/ui/button';
 import { MicrodoseProfile } from '@/components/MicrodoseProfile';
 import { NotificationCenter } from '@/components/NotificationCenter';
 import { Layout } from '@/components/Layout';
+import { DashboardTabNavigation } from '@/components/DashboardTabNavigation';
 import { User, Mail, Calendar, Calculator, Activity, Plus, Clock, BarChart3, Home } from 'lucide-react';
 import { useQuery } from '@tanstack/react-query';
 import { apiClient } from '@/lib/api';
@@ -11,6 +12,7 @@ import { Link, useLocation } from 'react-router-dom';
 import { AnalyticsPage } from './AnalyticsPage';
 import { CalendarPage } from './CalendarPage';
 import { ProtocolsPage } from './ProtocolsPage';
+import '../styles/dashboard-tabs.css';
 
 export function DashboardPage() {
   const { user } = useAuth();
@@ -66,62 +68,7 @@ export function DashboardPage() {
         <div className="container mx-auto px-4 py-8">
           
           {/* Tab Navigation */}
-          <div className="mb-8">
-            <div className="flex space-x-1 bg-white/90 backdrop-blur-sm rounded-2xl p-2 shadow-lg max-w-2xl">
-              <Link
-                to="/dashboard"
-                className={`flex-1 py-3 px-4 rounded-xl font-medium transition-all duration-300 ${
-                  activeTab === 'dashboard'
-                    ? 'bg-gradient-to-r from-turquoise-500 to-lilac-500 text-white shadow-lg'
-                    : 'text-slate-600 hover:text-turquoise-600 hover:bg-turquoise-50'
-                }`}
-              >
-                <div className="flex items-center justify-center space-x-2">
-                  <Home className="w-4 h-4" />
-                  <span>Dashboard</span>
-                </div>
-              </Link>
-              <Link
-                to="/dashboard/protocols"
-                className={`flex-1 py-3 px-4 rounded-xl font-medium transition-all duration-300 ${
-                  activeTab === 'protocols'
-                    ? 'bg-gradient-to-r from-turquoise-500 to-lilac-500 text-white shadow-lg'
-                    : 'text-slate-600 hover:text-turquoise-600 hover:bg-turquoise-50'
-                }`}
-              >
-                <div className="flex items-center justify-center space-x-2">
-                  <Calendar className="w-4 h-4" />
-                  <span>Protokolle</span>
-                </div>
-              </Link>
-              <Link
-                to="/dashboard/analytics"
-                className={`flex-1 py-3 px-4 rounded-xl font-medium transition-all duration-300 ${
-                  activeTab === 'analytics'
-                    ? 'bg-gradient-to-r from-turquoise-500 to-lilac-500 text-white shadow-lg'
-                    : 'text-slate-600 hover:text-turquoise-600 hover:bg-turquoise-50'
-                }`}
-              >
-                <div className="flex items-center justify-center space-x-2">
-                  <BarChart3 className="w-4 h-4" />
-                  <span>Analytics</span>
-                </div>
-              </Link>
-              <Link
-                to="/dashboard/calendar"
-                className={`flex-1 py-3 px-4 rounded-xl font-medium transition-all duration-300 ${
-                  activeTab === 'calendar'
-                    ? 'bg-gradient-to-r from-turquoise-500 to-lilac-500 text-white shadow-lg'
-                    : 'text-slate-600 hover:text-turquoise-600 hover:bg-turquoise-50'
-                }`}
-              >
-                <div className="flex items-center justify-center space-x-2">
-                  <Calendar className="w-4 h-4" />
-                  <span>Kalender</span>
-                </div>
-              </Link>
-            </div>
-          </div>
+          <DashboardTabNavigation />
 
           {/* Tab Content */}
           {activeTab === 'dashboard' && (

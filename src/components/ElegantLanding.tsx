@@ -32,7 +32,7 @@ export const ElegantLanding: React.FC = () => {
             <Link to="/signup">
               <div className="bg-gradient-to-r from-calm-turquoise-100 to-calm-lilac-100 hover:from-calm-turquoise-200 hover:to-calm-lilac-200 text-slate-700 rounded-full px-6 py-2 shadow-sm hover:shadow-md transition-all duration-300">
                 <span className="font-soft text-sm font-medium">
-                  Registrieren
+                  Personalisierte Mikrodosierung berechnen
                 </span>
               </div>
             </Link>
@@ -45,16 +45,34 @@ export const ElegantLanding: React.FC = () => {
         <div className="max-w-7xl mx-auto">
           {/* Rounded Frame Container */}
           <div className="relative rounded-3xl overflow-hidden shadow-2xl">
-            {/* Hero Image with Pastel Background */}
-            <div className="relative h-[80vh] w-full">
-              <img 
-                src="/images/presentation.jpg"
-                alt="Professional speaker on stage presenting"
-                className="w-full h-full object-cover"
-              />
-                            
+            {/* Hero Background with Abstract Elements */}
+            <div className="relative h-[80vh] w-full bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 overflow-hidden">
+              {/* Abstract Background Elements */}
+              <div className="absolute inset-0">
+                {/* Large circular blob - top left */}
+                <div className="absolute -top-40 -left-40 w-96 h-96 bg-calm-turquoise-500/20 rounded-full blur-3xl"></div>
+                
+                {/* Medium circular blob - top right */}
+                <div className="absolute top-20 -right-32 w-80 h-80 bg-calm-lilac-500/20 rounded-full blur-3xl"></div>
+                
+                {/* Small circular blob - bottom left */}
+                <div className="absolute bottom-20 left-20 w-64 h-64 bg-calm-yellow-400/20 rounded-full blur-3xl"></div>
+                
+                {/* Geometric shapes */}
+                <div className="absolute top-1/4 right-1/4 w-32 h-32 border-2 border-calm-turquoise-400/30 rotate-45 rounded-3xl"></div>
+                <div className="absolute bottom-1/4 left-1/3 w-24 h-24 border-2 border-calm-lilac-400/30 rotate-12 rounded-2xl"></div>
+                
+                {/* Small dots pattern */}
+                <div className="absolute top-0 left-0 w-full h-full opacity-10">
+                  <div className="absolute top-1/3 left-1/4 w-2 h-2 bg-calm-turquoise-300 rounded-full"></div>
+                  <div className="absolute top-1/2 right-1/3 w-3 h-3 bg-calm-lilac-300 rounded-full"></div>
+                  <div className="absolute bottom-1/3 left-1/2 w-2 h-2 bg-calm-yellow-300 rounded-full"></div>
+                  <div className="absolute top-2/3 right-1/5 w-2 h-2 bg-calm-turquoise-300 rounded-full"></div>
+                </div>
+              </div>
+              
               {/* Subtle overlay for better text contrast */}
-              <div className="absolute inset-0 bg-gradient-to-br from-black/20 via-transparent to-black/30"></div>
+              <div className="absolute inset-0 bg-gradient-to-br from-black/40 via-transparent to-black/30"></div>
               
               {/* Content overlay */}
               <div className="absolute inset-0 flex items-center">
@@ -65,12 +83,20 @@ export const ElegantLanding: React.FC = () => {
                     <div className="lg:col-span-8 space-y-6">
                       {/* Main Title */}
                       <div className="space-y-4">
-                        <h1 className="text-3xl lg:text-4xl xl:text-5xl font-soft font-light leading-tight text-white">
-                          Bring dein Leben auf das nächste Level – mit klarerem Fokus, mehr Kreativität & spürbar besserer Stimmung durch
-                          <span className="block bg-gradient-to-r from-calm-turquoise-300 via-calm-lilac-300 to-calm-yellow-300 bg-clip-text text-transparent font-medium mt-2">
-                            sichere & personalisierte Mikrodosierung
-                          </span>
+                        {/* Groß: Hauptüberschrift */}
+                        <h1 className="text-4xl lg:text-5xl xl:text-6xl font-soft font-light leading-tight text-white">
+                          Grenzenlos selbstbestimmt
                         </h1>
+                        {/* Mittel: Untertitel */}
+                        <p className="text-2xl lg:text-3xl xl:text-4xl font-soft font-light leading-tight text-white">
+                          <span className="bg-gradient-to-r from-calm-turquoise-300 via-calm-lilac-300 to-calm-yellow-300 bg-clip-text text-transparent font-medium">
+                            durch personalisierte & sichere Microdos.in Experience
+                          </span>
+                        </p>
+                        {/* Klein: Beschreibung */}
+                        <p className="text-base lg:text-lg xl:text-xl font-soft font-light leading-relaxed text-white/90 mt-2">
+                          Bring dein Leben auf das nächste Level – mit klarerem Fokus, mehr Kreativität & spürbar besserer Stimmung durch
+                        </p>
                       </div>
 
                       {/* Social Proof and CTA Row */}
